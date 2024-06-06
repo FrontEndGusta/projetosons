@@ -1,39 +1,41 @@
 import User from "@/models/User";
-import NextAuth, { NextAuthOptions } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
 import connect from "@/utils/db";
 
-const options: NextAuthOptions = {
+const options = NextAuth({
   providers: [
     CredentialsProvider({
-      id: "credentials",
+      id: "Credentials",
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "example@example.com" },
+        email: { label: "email", type: "email" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (!credentials) {
-          throw new Error("No credentials provided");
-        }
-
         await connect();
 
         try {
-          const user = await User.findOne({
-            email: credentials.email,
-          }).exec();
+          const email = credentials?.email;
+          const password = credentials?.password;
+
+          if (!email || !password) {
+            throw new Error("Credenciais incompletas!");
+          }
+
+          const user = await User.findOne({ email });
 
           if (user) {
-            const validPassword = (credentials.password === user.password);
+            const validPassword = await bcrypt.compare(password, user.password);
 
             if (validPassword) {
               return user;
             } else {
-              throw new Error("Invalid credentials");
+              throw new Error("Credenciais erradas!");
             }
           } else {
-            throw new Error("Invalid credentials");
+            throw new Error("Credenciais erradas!");
           }
         } catch (error) {
           throw new Error(error instanceof Error ? error.message : "Unknown error");
@@ -44,6 +46,6 @@ const options: NextAuthOptions = {
   pages: {
     error: "/login",
   },
-};
+});
 
 export { options as GET, options as POST };

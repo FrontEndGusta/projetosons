@@ -22,7 +22,7 @@ import RegisterForm from "./Register";
 import ForgotPasswordForm from "./ForgotPassword";
 
 const Login = () => {
-  const { formLogin, formForgotPassword, mutation, onSubmit } =
+  const { formLogin, formForgotPassword, mutation, onSubmitLogin } =
     useLogin(); // Use o hook useLogin aqui
   const [activeTab, setActiveTab] = useState("entrar");
 
@@ -54,7 +54,7 @@ const Login = () => {
           <CardHeader>
             <Form {...formLogin}>
               <form
-                onSubmit={formLogin.handleSubmit(onSubmit)}
+                onSubmit={formLogin.handleSubmit(onSubmitLogin)}
                 className="space-y-6"
               >
                 <FormField

@@ -5,6 +5,8 @@ import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { dialogLexicon } from "../lexicon/pt";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 const FormSchemaLogin = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -25,7 +27,6 @@ const FormSchemaRegister = z
     message: "As senhas não coincidem",
     path: ["confirmPassword"],
   });
-
 
 const FormSchemaForgotPassword = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -81,7 +82,7 @@ const useLogin = () => {
     if (FormSchemaRegister.safeParse(data).success) {
       return { endPoint: "/auth/register", operationType: "register" };
     } else if (FormSchemaLogin.safeParse(data).success) {
-      return { endPoint: "/auth/login", operationType: "login" };
+      return { endPoint: "", operationType: "login" };
     } else if (FormSchemaForgotPassword.safeParse(data).success) {
       return {
         endPoint: "/auth/forgot-password",
@@ -115,7 +116,7 @@ const useLogin = () => {
     ) => {
       const { endPoint } = getEndpoint(data);
       const url = `${process.env.NEXT_PUBLIC_API_URL}${endPoint}`;
-      return axios.post('/api/auth/register', data);
+      return axios.post("/api/auth/register", data);
     },
   });
 
@@ -129,34 +130,75 @@ const useLogin = () => {
     }
   };
 
+  async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
+    try {
+      await mutation.mutate(values);
+      const response = await signIn("Credentials", {
+        ...values,
+        redirect: false,
+      });
+
+      if (response && !response.error) {
+        toast({
+          title: dialogLexicon.SUCCESS_MESSAGES.loginSuccess,
+        });
+      } else {
+        toast({
+          variant: "destructive",
+          title: dialogLexicon.ERROR_MESSAGES.loginError,
+          description: response?.error || "Ocorreu um erro inesperado.",
+        });
+      }
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Ocorreu um erro inesperado.";
+      toast({
+        variant: "destructive",
+        title: dialogLexicon.ERROR_MESSAGES.loginError,
+        description: errorMessage,
+      });
+    }
+  }
+
   const onSubmit = (
     data:
-      | z.infer<typeof FormSchemaLogin>
       | z.infer<typeof FormSchemaRegister>
       | z.infer<typeof FormSchemaForgotPassword>
       | z.infer<typeof FormSchemaPasswordCode>
   ) => {
     mutation.mutate(data, {
-      onSuccess: () => {
+      onSuccess: (dataResponse: any) => {
         const { operationType } = getEndpoint(data);
-        const title: string =
-          operationType === "login"
-            ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
-            : operationType === "register"
-            ? dialogLexicon.SUCCESS_MESSAGES.registerSuccess
-            : operationType === "forgotPassword"
-            ? dialogLexicon.SUCCESS_MESSAGES.codeSuccess
-            : operationType === "passwordCode"
-            ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
-            : "";
-        toast({
-          title: title,
-        });
+        const statusCode = dataResponse?.data?.status;
+        const responseMsg = dataResponse?.data?.message;
+
+        const title =
+            operationType === "login"
+              ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
+              : operationType === "register"
+              ? dialogLexicon.SUCCESS_MESSAGES.registerSuccess
+              : operationType === "forgotPassword"
+              ? dialogLexicon.SUCCESS_MESSAGES.codeSuccess
+              : operationType === "passwordCode"
+              ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
+              : "";
+
+        if(statusCode === 201) {
+          toast({
+            title: title,
+          })
+        } else {
+          toast({
+            title: responseMsg,
+            variant: 'destructive'
+          })
+        }
+  
         resetForm(operationType);
       },
       onError: (error) => {
         const { operationType } = getEndpoint(data);
-        const title: string =
+        const title =
           operationType === "login"
             ? dialogLexicon.ERROR_MESSAGES.loginError
             : operationType === "register"
@@ -164,7 +206,7 @@ const useLogin = () => {
             : operationType === "forgotPassword"
             ? dialogLexicon.ERROR_MESSAGES.codeError
             : "";
-
+  
         toast({
           variant: "destructive",
           title: title,
@@ -174,6 +216,7 @@ const useLogin = () => {
       },
     });
   };
+  
 
   return {
     formRegister,
@@ -181,6 +224,7 @@ const useLogin = () => {
     formPasswordCode,
     formForgotPassword,
     mutation,
+    onSubmitLogin,
     onSubmit,
   };
 };
