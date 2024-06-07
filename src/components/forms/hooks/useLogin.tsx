@@ -1,3 +1,4 @@
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -6,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { dialogLexicon } from "../lexicon/pt";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const FormSchemaLogin = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -38,7 +39,8 @@ const FormSchemaPasswordCode = z.object({
 
 const useLogin = () => {
   const { toast } = useToast();
-
+  const router = useRouter();
+  
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
     defaultValues: {
@@ -129,7 +131,7 @@ const useLogin = () => {
       formForgotPassword.reset();
     }
   };
-
+  
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
     try {
       await mutation.mutate(values);
@@ -142,6 +144,7 @@ const useLogin = () => {
         toast({
           title: dialogLexicon.SUCCESS_MESSAGES.loginSuccess,
         });
+        router.push("dashboard");
       } else {
         toast({
           variant: "destructive",
@@ -173,27 +176,27 @@ const useLogin = () => {
         const responseMsg = dataResponse?.data?.message;
 
         const title =
-            operationType === "login"
-              ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
-              : operationType === "register"
-              ? dialogLexicon.SUCCESS_MESSAGES.registerSuccess
-              : operationType === "forgotPassword"
-              ? dialogLexicon.SUCCESS_MESSAGES.codeSuccess
-              : operationType === "passwordCode"
-              ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
-              : "";
+          operationType === "login"
+            ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
+            : operationType === "register"
+            ? dialogLexicon.SUCCESS_MESSAGES.registerSuccess
+            : operationType === "forgotPassword"
+            ? dialogLexicon.SUCCESS_MESSAGES.codeSuccess
+            : operationType === "passwordCode"
+            ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
+            : "";
 
-        if(statusCode === 201) {
+        if (statusCode === 201) {
           toast({
             title: title,
-          })
+          });
         } else {
           toast({
             title: responseMsg,
-            variant: 'destructive'
-          })
+            variant: "destructive",
+          });
         }
-  
+
         resetForm(operationType);
       },
       onError: (error) => {
@@ -206,7 +209,7 @@ const useLogin = () => {
             : operationType === "forgotPassword"
             ? dialogLexicon.ERROR_MESSAGES.codeError
             : "";
-  
+
         toast({
           variant: "destructive",
           title: title,
@@ -216,7 +219,6 @@ const useLogin = () => {
       },
     });
   };
-  
 
   return {
     formRegister,
