@@ -50,6 +50,11 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        bgCustom: "#080c1c",
+        bgHeader: {
+          light: '#ffffff', // cor do background para o tema claro
+          dark: '#1f2937', // cor do background para o tema escuro
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

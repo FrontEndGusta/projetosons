@@ -4,6 +4,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import QueryProvider from "@/components/QueryProvider"; // Importe o componente criado
 import AuthProvider from "@/components/AuthProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import Header from "@/components/header/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,12 +23,20 @@ export default function RootLayout({
     <html lang="en">
       <AuthProvider>
         <body className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
           <QueryProvider>
+            <Header />
             {" "}
             {/* Utilize o QueryProvider aqui */}
             {children}
             <Toaster />
           </QueryProvider>
+          </ThemeProvider>
         </body>
       </AuthProvider>
     </html>
