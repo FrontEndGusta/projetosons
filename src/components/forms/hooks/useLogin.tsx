@@ -134,16 +134,15 @@ const useLogin = () => {
   
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
     try {
-      await mutation.mutate(values);
+      mutation.mutate(values);
       const response = await signIn("Credentials", {
         ...values,
         redirect: false,
       });
-
+      toast({
+        title: dialogLexicon.SUCCESS_MESSAGES.loginSuccess,
+      });
       if (response && !response.error) {
-        toast({
-          title: dialogLexicon.SUCCESS_MESSAGES.loginSuccess,
-        });
         router.push("dashboard");
       } else {
         toast({
