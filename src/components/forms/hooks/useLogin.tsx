@@ -37,10 +37,10 @@ const FormSchemaPasswordCode = z.object({
   code: z.string().min(6, dialogLexicon.ERROR_MESSAGES.codeError),
 });
 
-const useLogin = () => {
+const useLogin = (onTabChange?: (value: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
-  
+
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
     defaultValues: {
@@ -84,7 +84,7 @@ const useLogin = () => {
     if (FormSchemaRegister.safeParse(data).success) {
       return { endPoint: "/auth/register", operationType: "register" };
     } else if (FormSchemaLogin.safeParse(data).success) {
-      return { endPoint: "", operationType: "login" };
+      return { endPoint: "/login", operationType: "login" };
     } else if (FormSchemaForgotPassword.safeParse(data).success) {
       return {
         endPoint: "/auth/forgot-password",
@@ -109,16 +109,21 @@ const useLogin = () => {
   };
 
   const mutation = useMutation({
-    mutationFn: (
+    mutationFn: async (
       data:
         | z.infer<typeof FormSchemaLogin>
         | z.infer<typeof FormSchemaRegister>
         | z.infer<typeof FormSchemaForgotPassword>
         | z.infer<typeof FormSchemaPasswordCode>
     ) => {
-      const { endPoint } = getEndpoint(data);
-      const url = `${process.env.NEXT_PUBLIC_API_URL}${endPoint}`;
-      return axios.post("/api/auth/register", data);
+      const { endPoint, operationType } = getEndpoint(data);
+      // const url = `${process.env.NEXT_PUBLIC_API_URL}${endPoint}`;
+      const url = endPoint;
+      if (operationType === "login") {
+        return;
+      } else {
+        return await axios.post(url, data);
+      }
     },
   });
 
@@ -131,7 +136,7 @@ const useLogin = () => {
       formForgotPassword.reset();
     }
   };
-  
+
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
     try {
       mutation.mutate(values);
@@ -195,7 +200,9 @@ const useLogin = () => {
             variant: "destructive",
           });
         }
-
+        if (operationType === "register" && onTabChange) {
+          onTabChange("entrar");
+        }
         resetForm(operationType);
       },
       onError: (error) => {

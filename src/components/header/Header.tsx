@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { ExitIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import {
   DropdownMenu,
@@ -15,24 +15,29 @@ import { Button } from "../ui/button";
 export default function Header() {
   const { data: session } = useSession();
   const { setTheme } = useTheme();
-
+  const userName: string = session?.user?.name
+    ? session.user.name.split(" ")[0]
+    : "Guest";
   return (
-    <div className="flex gap-4 justify-end p-2 pr-10 mr-30 flex-wrap">
+    <div className={`flex gap-4 p-2 pr-10 flex-wrap ${!session && 'justify-end'}`}>
       {session && (
         <>
-          <Link href="/">Home</Link>
-          <Link href="/sobre">Sobre</Link>
-          <Link href="/contato">Contato</Link>
+          <span className="flex-grow px-2 flex items-center">{`Olá, ${userName}`}</span>
         </>
       )}
+      
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
             <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
           </Button>
         </DropdownMenuTrigger>
+        {session && (
+          <Button variant="outline" size="icon" onClick={() => signOut()}>
+            <ExitIcon />
+          </Button>
+        )}
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => setTheme("light")}>
             Modo claro

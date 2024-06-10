@@ -1,4 +1,5 @@
-"use client";
+"use client"
+import { useEffect } from "react";
 import Login from "@/components/forms/Login";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -7,9 +8,12 @@ export default function PageLogin() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (session) {
-    return router.push("/"); // Optional, can show a loading spinner here too
-  }
+  useEffect(() => {
+    if (session) {
+      router.push("/");
+    }
+  }, [session, router]);
+
   return (
     <>
       {!session && (
