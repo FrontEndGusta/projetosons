@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 
 export default function Header() {
@@ -19,13 +20,20 @@ export default function Header() {
     ? session.user.name.split(" ")[0]
     : "Guest";
   return (
-    <div className={`flex gap-4 p-2 pr-10 flex-wrap ${!session && 'justify-end'}`}>
+    <div
+      className={`flex gap-4 p-2 pr-10 flex-wrap ${!session && "justify-end"}`}
+    >
       {session && (
         <>
+          <Avatar>
+            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+
           <span className="flex-grow px-2 flex items-center">{`Olá, ${userName}`}</span>
         </>
       )}
-      
+
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="icon">
