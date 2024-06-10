@@ -82,17 +82,17 @@ const useLogin = (onTabChange?: (value: string) => void) => {
       | z.infer<typeof FormSchemaPasswordCode>
   ) => {
     if (FormSchemaRegister.safeParse(data).success) {
-      return { endPoint: "/auth/register", operationType: "register" };
+      return { endPoint: "/api/auth/register", operationType: "register" };
     } else if (FormSchemaLogin.safeParse(data).success) {
       return { endPoint: "/login", operationType: "login" };
     } else if (FormSchemaForgotPassword.safeParse(data).success) {
       return {
-        endPoint: "/auth/forgot-password",
+        endPoint: "/api/auth/forgot-password",
         operationType: "forgotPassword",
       };
     } else if (FormSchemaPasswordCode.safeParse(data).success) {
       return {
-        endPoint: "/auth/password-code",
+        endPoint: "/api/auth/password-code",
         operationType: "passwordCode",
       };
     } else {
