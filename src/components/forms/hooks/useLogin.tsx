@@ -190,7 +190,7 @@ const useLogin = (onTabChange?: (value: string) => void) => {
             ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
             : "";
 
-        if (statusCode === 201) {
+        if (statusCode === 201 || 200) {
           toast({
             title: title,
           });
