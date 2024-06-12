@@ -178,7 +178,7 @@ const useLogin = (onTabChange?: (value: string) => void) => {
         const { operationType } = getEndpoint(data);
         const statusCode = dataResponse?.data?.status;
         const responseMsg = dataResponse?.data?.message;
-
+        console.log(responseMsg)
         const title =
           operationType === "login"
             ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
@@ -190,7 +190,7 @@ const useLogin = (onTabChange?: (value: string) => void) => {
             ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
             : "";
 
-        if (statusCode === 201 || 200) {
+        if (responseMsg != 'Esse e-mail não existe' && statusCode === 201 || 200) {
           toast({
             title: title,
           });
