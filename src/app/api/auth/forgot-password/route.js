@@ -4,9 +4,10 @@ import connect from "@/utils/db";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-const emailTransporter = process.env.EMAIL;
-const passwordTransporter = process.env.PASSWORD;
+
 export async function POST(req) {
+  const emailTransporter = process.env.EMAIL;
+  const passwordTransporter = process.env.PASSWORD;
   const { email } = await req.json();
 
   await connect();
