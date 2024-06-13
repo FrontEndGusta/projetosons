@@ -1,11 +1,11 @@
 import User from "@/models/User";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import connect from "@/utils/db";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
-export async function POST(req: NextResponse) {
+export async function POST(req: Request) {
   const emailTransporter = process.env.EMAIL;
   const passwordTransporter = process.env.PASSWORD;
   const { email } = await req.json();
