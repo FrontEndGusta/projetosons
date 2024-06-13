@@ -97,7 +97,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
         </Card>
       </TabsContent>
 
-      <TabsContent value={"formCodigo"}>
+      <TabsContent value="formCodigo">
         <Card>
           <CardHeader>
             <Form {...formPasswordCode}>
