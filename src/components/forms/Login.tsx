@@ -20,10 +20,10 @@ import useLogin from "./hooks/useLogin";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import RegisterForm from "./Register";
 import ForgotPasswordForm from "./ForgotPassword";
+import FormCodigo from "./FormCodigo";
 
 const Login = () => {
-  const { formLogin, formForgotPassword, mutation, onSubmitLogin } =
-    useLogin(); // Use o hook useLogin aqui
+  const { formLogin, formForgotPassword, mutation, onSubmitLogin } = useLogin(); // Use o hook useLogin aqui
   const [activeTab, setActiveTab] = useState("entrar");
 
   const onTabChange = (value: string) => {
@@ -114,13 +114,14 @@ const Login = () => {
         </Card>
       </TabsContent>
 
-  
-
       <TabsContent value="registrar">
         <RegisterForm onTabChange={onTabChange} />
       </TabsContent>
       <TabsContent value="recuperarSenha">
         <ForgotPasswordForm onTabChange={onTabChange} />
+      </TabsContent>
+      <TabsContent value="formCodigo">
+        <FormCodigo onTabChange={onTabChange} />
       </TabsContent>
     </Tabs>
   );
