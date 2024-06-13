@@ -126,6 +126,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       return {
         endPoint: "/api/auth/reset-password",
         operationType: "resetPassword",
+        changeTab: "entrar"
       };
     } else {
       toast({
@@ -240,6 +241,9 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             onTabChange(changeTab);
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
+            onTabChange(changeTab);
+          }
+          if (operationType === "resetPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);
           }
         } else {

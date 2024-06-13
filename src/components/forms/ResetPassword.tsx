@@ -30,9 +30,9 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange }) =>
   return (
     <Card>
       <CardHeader>
+      <CardTitle>Digite a sua nova senha</CardTitle>
         <CardDescription>
-          Digite sua nova senha
-          
+          A senha deve conter pelo menos 6 caracteres.
         </CardDescription>
       </CardHeader>
       <CardHeader>
@@ -80,10 +80,10 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange }) =>
               {mutation.isPending ? (
                 <Button disabled>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
-                  Enviando...
+                  Redefinindo...
                 </Button>
               ) : (
-                <Button type="submit">Registrar</Button>
+                <Button type="submit">Redefinir senha</Button>
               )}
             </div>
           </form>
