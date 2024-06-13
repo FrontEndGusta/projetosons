@@ -93,7 +93,7 @@ const Login = () => {
                 <CardDescription>
                   Esqueceu sua senha?{" "}
                   <span
-                    onClick={() => onTabChange("formResetPassword")}
+                    onClick={() => onTabChange("recuperarSenha")}
                     style={{ color: "blue", cursor: "pointer" }}
                   >
                     Recuperar senha

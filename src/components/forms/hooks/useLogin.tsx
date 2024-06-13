@@ -265,7 +265,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             : operationType === "forgotPassword"
             ? dialogLexicon.ERROR_MESSAGES.codeError
             : "";
-
+        // implementar msg de erro de redefinição de senha e código aqui
         toast({
           variant: "destructive",
           title: title,
