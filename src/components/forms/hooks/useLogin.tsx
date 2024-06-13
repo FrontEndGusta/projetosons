@@ -178,7 +178,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     mutation.mutate(data, {
       onSuccess: (dataResponse: any) => {
         const { operationType, changeTab } = getEndpoint(data);
-        const statusCode = dataResponse?.data?.status;
+        const statusCode = dataResponse?.data?.status || dataResponse.data
         const responseMsg = dataResponse?.data?.message;
         console.log(dataResponse)
         
@@ -202,6 +202,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           }
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);
+            console.log(changeTab)
           }
         } else {
           toast({
