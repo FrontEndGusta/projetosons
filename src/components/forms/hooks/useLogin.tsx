@@ -94,7 +94,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       };
     } else if (FormSchemaPasswordCode.safeParse(data).success) {
       return {
-        endPoint: "/api/auth/password-code",
+        endPoint: "/api/auth/verify-code",
         operationType: "passwordCode",
       };
     } else {
