@@ -23,7 +23,9 @@ interface RegisterFormProps {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onTabChange }) => {
-  const { formRegister, mutation, onSubmit } = useLogin(() => onTabChange('entrar'));
+  const { formRegister, mutation, onSubmit } = useLogin((changeTab) =>
+    onTabChange(changeTab)
+  );
 
   return (
     <Card>

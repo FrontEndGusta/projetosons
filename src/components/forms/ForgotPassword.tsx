@@ -32,12 +32,16 @@ interface ForgotPasswordFormProps {
   onTabChange: (value: string) => void;
 }
 
-const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onTabChange }) => {
-  const { formForgotPassword, formPasswordCode, mutation, onSubmit } = useLogin();
+const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
+  onTabChange,
+}) => {
+  const { formForgotPassword, formPasswordCode, mutation, onSubmit } = useLogin(
+    (changeTab) => onTabChange(changeTab)
+  );
 
   return (
-    <TabsContent value="recuperarSenha">
-      {!mutation.isSuccess ? (
+    <>
+      <TabsContent value="recuperarSenha">
         <Card>
           <CardHeader>
             <CardTitle>Recuperar senha</CardTitle>
@@ -67,7 +71,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onTabChange }) 
                     </FormItem>
                   )}
                 />
-                
+
                 <div className="flex justify-end">
                   {mutation.isPending ? (
                     <Button disabled>
@@ -91,7 +95,9 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onTabChange }) 
             </Form>
           </CardHeader>
         </Card>
-      ) : (
+      </TabsContent>
+
+      <TabsContent value={"formCodigo"}>
         <Card>
           <CardHeader>
             <Form {...formPasswordCode}>
@@ -137,12 +143,20 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({ onTabChange }) 
                     <Button type="submit">Enviar</Button>
                   )}
                 </div>
+                <CardDescription>
+                  <span
+                    onClick={() => onTabChange("recuperarSenha")}
+                    style={{ color: "blue", cursor: "pointer" }}
+                  >
+                    Voltar
+                  </span>
+                </CardDescription>
               </form>
             </Form>
           </CardHeader>
         </Card>
-      )}
-    </TabsContent>
+      </TabsContent>
+    </>
   );
 };
 

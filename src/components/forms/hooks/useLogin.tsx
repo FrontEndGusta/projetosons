@@ -8,6 +8,7 @@ import { useMutation } from "@tanstack/react-query";
 import { dialogLexicon } from "../lexicon/pt";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { stat } from "fs";
 
 const FormSchemaLogin = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -37,7 +38,7 @@ const FormSchemaPasswordCode = z.object({
   code: z.string().min(6, dialogLexicon.ERROR_MESSAGES.codeError),
 });
 
-const useLogin = (onTabChange?: (value: string) => void) => {
+const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
 
@@ -82,13 +83,14 @@ const useLogin = (onTabChange?: (value: string) => void) => {
       | z.infer<typeof FormSchemaPasswordCode>
   ) => {
     if (FormSchemaRegister.safeParse(data).success) {
-      return { endPoint: "/api/auth/register", operationType: "register" };
+      return { endPoint: "/api/auth/register", operationType: "register", changeTab: 'entrar' };
     } else if (FormSchemaLogin.safeParse(data).success) {
       return { endPoint: "/login", operationType: "login" };
     } else if (FormSchemaForgotPassword.safeParse(data).success) {
       return {
         endPoint: "/api/auth/forgot-password",
         operationType: "forgotPassword",
+        changeTab: 'formCodigo'
       };
     } else if (FormSchemaPasswordCode.safeParse(data).success) {
       return {
@@ -175,10 +177,11 @@ const useLogin = (onTabChange?: (value: string) => void) => {
   ) => {
     mutation.mutate(data, {
       onSuccess: (dataResponse: any) => {
-        const { operationType } = getEndpoint(data);
+        const { operationType, changeTab } = getEndpoint(data);
         const statusCode = dataResponse?.data?.status;
         const responseMsg = dataResponse?.data?.message;
-        console.log(responseMsg)
+        console.log(dataResponse)
+        
         const title =
           operationType === "login"
             ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
@@ -189,20 +192,24 @@ const useLogin = (onTabChange?: (value: string) => void) => {
             : operationType === "passwordCode"
             ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
             : "";
-
-        if (responseMsg != 'Esse e-mail não existe' && statusCode === 201 || 200) {
+        console.log(statusCode)
+        if (statusCode === 201 || statusCode === 200) {
           toast({
             title: title,
           });
+          if (operationType === "register" && onTabChange && changeTab) {
+            onTabChange(changeTab);
+          }
+          if (operationType === "forgotPassword" && onTabChange && changeTab) {
+            onTabChange(changeTab);
+          }
         } else {
           toast({
             title: responseMsg,
             variant: "destructive",
           });
         }
-        if (operationType === "register" && onTabChange) {
-          onTabChange("entrar");
-        }
+        
         resetForm(operationType);
       },
       onError: (error) => {
@@ -215,22 +222,25 @@ const useLogin = (onTabChange?: (value: string) => void) => {
             : operationType === "forgotPassword"
             ? dialogLexicon.ERROR_MESSAGES.codeError
             : "";
-
+  
         toast({
           variant: "destructive",
           title: title,
           description: error.message || "Ocorreu um erro inesperado.",
         });
+        
         resetForm(operationType);
       },
     });
   };
+  
 
   return {
     formRegister,
     formLogin,
     formPasswordCode,
     formForgotPassword,
+    FormSchemaForgotPassword,
     mutation,
     onSubmitLogin,
     onSubmit,
