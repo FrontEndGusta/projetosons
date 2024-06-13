@@ -42,8 +42,8 @@ export async function POST(req: Request) {
   });
 
   const mailOptions = {
-    from: email,
-    to: "gustavo.lima1307@gmail.com",
+    from: 'no-reply',
+    to: email,
     subject: "Código de Verificação",
     text: `Seu código de verificação é: ${verificationCode}`,
   };
