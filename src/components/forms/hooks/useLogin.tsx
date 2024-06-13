@@ -178,8 +178,8 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     mutation.mutate(data, {
       onSuccess: (dataResponse: any) => {
         const { operationType, changeTab } = getEndpoint(data);
-        const statusCode = dataResponse?.data?.status || dataResponse.data
-        const responseMsg = dataResponse?.data?.message;
+        const statusCode = dataResponse?.data?.status || dataResponse.data || dataResponse.status
+        const responseMsg = dataResponse?.data?.message || dataResponse.data;
         console.log(dataResponse)
         
         const title =
