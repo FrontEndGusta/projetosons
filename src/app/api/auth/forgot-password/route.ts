@@ -5,7 +5,7 @@ import bcrypt from "bcrypt";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
-export async function POST(req) {
+export async function POST(req: NextResponse) {
   const emailTransporter = process.env.EMAIL;
   const passwordTransporter = process.env.PASSWORD;
   const { email } = await req.json();
