@@ -38,6 +38,17 @@ const FormSchemaPasswordCode = z.object({
   code: z.string().min(6, dialogLexicon.ERROR_MESSAGES.codeError),
 });
 
+const FormSchemaResetPassword = z.object({
+    password: z.string().min(6, dialogLexicon.ERROR_MESSAGES.password),
+    confirmPassword: z
+      .string()
+      .min(6, dialogLexicon.ERROR_MESSAGES.confirmPassword),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "As senhas não coincidem",
+    path: ["confirmPassword"],
+  });
+
 const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
@@ -75,27 +86,46 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     },
   });
 
+  const formResetPassword = useForm({
+    resolver: zodResolver(FormSchemaResetPassword),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
   const getEndpoint = (
     data:
       | z.infer<typeof FormSchemaLogin>
       | z.infer<typeof FormSchemaRegister>
       | z.infer<typeof FormSchemaForgotPassword>
       | z.infer<typeof FormSchemaPasswordCode>
+      | z.infer<typeof FormSchemaResetPassword>
   ) => {
     if (FormSchemaRegister.safeParse(data).success) {
-      return { endPoint: "/api/auth/register", operationType: "register", changeTab: 'entrar' };
+      return {
+        endPoint: "/api/auth/register",
+        operationType: "register",
+        changeTab: "entrar",
+      };
     } else if (FormSchemaLogin.safeParse(data).success) {
       return { endPoint: "/login", operationType: "login" };
     } else if (FormSchemaForgotPassword.safeParse(data).success) {
       return {
         endPoint: "/api/auth/forgot-password",
         operationType: "forgotPassword",
-        changeTab: 'formCodigo'
+        changeTab: "formCodigo",
       };
     } else if (FormSchemaPasswordCode.safeParse(data).success) {
       return {
         endPoint: "/api/auth/verify-code",
         operationType: "passwordCode",
+        changeTab: "formResetPassword",
+      };
+    } else if (FormSchemaResetPassword.safeParse(data).success) {
+      return {
+        endPoint: "/api/auth/reset-password",
+        operationType: "resetPassword",
       };
     } else {
       toast({
@@ -117,6 +147,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
         | z.infer<typeof FormSchemaRegister>
         | z.infer<typeof FormSchemaForgotPassword>
         | z.infer<typeof FormSchemaPasswordCode>
+        | z.infer<typeof FormSchemaResetPassword>
     ) => {
       const { endPoint, operationType } = getEndpoint(data);
       // const url = `${process.env.NEXT_PUBLIC_API_URL}${endPoint}`;
@@ -136,6 +167,10 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       formRegister.reset();
     } else if (operationType === "forgotPassword") {
       formForgotPassword.reset();
+    } else if (operationType === "passwordCode") {
+      formPasswordCode.reset();
+    } else if (operationType === "resetPassword") {
+      formResetPassword.reset();
     }
   };
 
@@ -174,14 +209,15 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       | z.infer<typeof FormSchemaRegister>
       | z.infer<typeof FormSchemaForgotPassword>
       | z.infer<typeof FormSchemaPasswordCode>
+      | z.infer<typeof FormSchemaResetPassword>
   ) => {
     mutation.mutate(data, {
       onSuccess: (dataResponse: any) => {
         const { operationType, changeTab } = getEndpoint(data);
-        const statusCode = dataResponse?.data?.status || dataResponse.status
+        const statusCode = dataResponse?.data?.status || dataResponse.status;
         const responseMsg = dataResponse?.data?.message || dataResponse.data;
-        console.log(dataResponse)
-        
+        console.log(dataResponse);
+
         const title =
           operationType === "login"
             ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
@@ -192,7 +228,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             : operationType === "passwordCode"
             ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
             : "";
-        console.log(statusCode)
+        console.log(statusCode);
         if (statusCode === 201 || statusCode === 200) {
           toast({
             title: title,
@@ -202,7 +238,9 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           }
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);
-            console.log(changeTab)
+          }
+          if (operationType === "passwordCode" && onTabChange && changeTab) {
+            onTabChange(changeTab);
           }
         } else {
           toast({
@@ -210,7 +248,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             variant: "destructive",
           });
         }
-        
+
         resetForm(operationType);
       },
       onError: (error) => {
@@ -223,18 +261,17 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             : operationType === "forgotPassword"
             ? dialogLexicon.ERROR_MESSAGES.codeError
             : "";
-  
+
         toast({
           variant: "destructive",
           title: title,
           description: error.message || "Ocorreu um erro inesperado.",
         });
-        
+
         resetForm(operationType);
       },
     });
   };
-  
 
   return {
     formRegister,
@@ -242,6 +279,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     formPasswordCode,
     formForgotPassword,
     FormSchemaForgotPassword,
+    formResetPassword,
     mutation,
     onSubmitLogin,
     onSubmit,

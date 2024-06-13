@@ -6,21 +6,18 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
-
   const { code } = await req.json();
 
   await connect();
 
-  const user = await User.findOne({ code, codeExpiration: {$gt: Date.now()} });
+  const user = await User.findOne({
+    code,
+    codeExpiration: { $gt: Date.now() },
+  });
 
-  if(!user) {
-    return new NextResponse(
-        "Código inválido ou expirado.",
-        { status: 400 }
-      );
+  if (!user) {
+    return new NextResponse("Código inválido ou expirado.", { status: 400 });
   }
 
-  return new NextResponse(JSON.stringify(user), {status: 200})
-
-
+  return new NextResponse("código verificado com sucesso!", { status: 200 });
 }

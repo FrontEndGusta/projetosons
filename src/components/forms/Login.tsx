@@ -21,6 +21,7 @@ import { ReloadIcon } from "@radix-ui/react-icons";
 import RegisterForm from "./Register";
 import ForgotPasswordForm from "./ForgotPassword";
 import FormCodigo from "./FormCodigo";
+import ResetPasswordForm from "./ResetPassword";
 
 const Login = () => {
   const { formLogin, formForgotPassword, mutation, onSubmitLogin } = useLogin(); // Use o hook useLogin aqui
@@ -122,6 +123,9 @@ const Login = () => {
       </TabsContent>
       <TabsContent value="formCodigo">
         <FormCodigo onTabChange={onTabChange} />
+      </TabsContent>
+      <TabsContent value="formResetPassword">
+        <ResetPasswordForm onTabChange={onTabChange} />
       </TabsContent>
     </Tabs>
   );
