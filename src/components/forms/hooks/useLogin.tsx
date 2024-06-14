@@ -54,7 +54,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
   const [emailTEST, setEmail] = useState("");
-
+  console.log('email - >', emailTEST)
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
     defaultValues: {
@@ -170,7 +170,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       }
     },
   });
-  console.log(emailTEST)
+
   const resetForm = (operationType: string) => {
     if (operationType === "login") {
       formLogin.reset();
@@ -218,13 +218,6 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     }
   }
 
-  useEffect(() => {
-    if (emailTEST) {
-      // Aqui você pode realizar qualquer ação necessária com o email salvo
-      console.log('Email salvo:', emailTEST);
-    }
-  }, [emailTEST]); // Este efeito será disparado toda vez que 'email' mudar
-
   const onSubmit = (
     data:
       | z.infer<typeof FormSchemaRegister>
@@ -232,20 +225,13 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       | z.infer<typeof FormSchemaPasswordCode>
       | z.infer<typeof FormSchemaResetPassword>
   ) => {
-    if (FormSchemaForgotPassword.safeParse(data).success) {
-      setEmail((data as z.infer<typeof FormSchemaForgotPassword>).email);
-      // Save the email when the forgot password form is submitted
-    }
+    
     mutation.mutate(data, {
       onSuccess: (dataResponse: any) => {
         const { operationType, changeTab } = getEndpoint(data);
         const statusCode = dataResponse?.data?.status || dataResponse.status;
         const responseMsg = dataResponse?.data?.message || dataResponse.data;
         console.log(dataResponse);
-        if (FormSchemaForgotPassword.safeParse(data).success) {
-          setEmail((data as z.infer<typeof FormSchemaForgotPassword>).email);
-          // Save the email when the forgot password form is submitted
-        }
 
         const title =
           operationType === "login"
@@ -266,11 +252,11 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             onTabChange(changeTab);
           }
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
-            onTabChange(changeTab); 
-            setEmail(dataResponse?.data)   
+            onTabChange(changeTab);    
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
+            setEmail(dataResponse?.email)
           }
           if (operationType === "resetPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);
@@ -314,7 +300,6 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     FormSchemaForgotPassword,
     formResetPassword,
     mutation,
-    emailTEST,
     onSubmitLogin,
     onSubmit,
   };

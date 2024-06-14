@@ -19,5 +19,5 @@ export async function POST(req: Request) {
     return new NextResponse("Código inválido ou expirado.", { status: 400 });
   }
 
-  return new NextResponse("código verificado com sucesso!", { status: 200 });
+  return new NextResponse(user.email, { status: 200 });
 }
