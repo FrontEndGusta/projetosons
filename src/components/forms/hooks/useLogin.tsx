@@ -218,6 +218,13 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     }
   }
 
+  useEffect(() => {
+    if (emailTEST) {
+      // Aqui você pode realizar qualquer ação necessária com o email salvo
+      console.log('Email salvo:', emailTEST);
+    }
+  }, [emailTEST]); // Este efeito será disparado toda vez que 'email' mudar
+
   const onSubmit = (
     data:
       | z.infer<typeof FormSchemaRegister>
