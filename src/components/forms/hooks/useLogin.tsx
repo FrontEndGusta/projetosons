@@ -9,7 +9,7 @@ import { dialogLexicon } from "../lexicon/pt";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { stat } from "fs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const FormSchemaLogin = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -53,7 +53,7 @@ const FormSchemaResetPassword = z.object({
 const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
-  const [emailTest, setEmail] = useState("");
+  const [emailTest, setEmailTest] = useState("");
 
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
@@ -181,12 +181,13 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       formResetPassword.reset();
     }
   };
-
+  console.log(emailTest)
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
     
     try {
+    
       mutation.mutate(values);
-      
+  
       const response = await signIn("Credentials", {
         ...values,
         redirect: false,
@@ -247,9 +248,8 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             onTabChange(changeTab);
           }
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
-            onTabChange(changeTab);  
-            setEmail(dataResponse?.data) 
-            console.log(emailTest)        
+            onTabChange(changeTab);    
+            setEmailTest(dataResponse?.data)   
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
