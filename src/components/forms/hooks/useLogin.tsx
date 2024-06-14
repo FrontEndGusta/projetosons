@@ -182,6 +182,10 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     }
   };
   console.log('valor de emailtest', emailTest)
+
+  useEffect(() => {
+    console.log('E-mail capturado2:', emailTest);
+  }, [emailTest]);
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
     
     try {
