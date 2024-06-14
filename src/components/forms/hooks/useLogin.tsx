@@ -156,9 +156,9 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       // const url = `${process.env.NEXT_PUBLIC_API_URL}${endPoint}`;
       
       const url = endPoint;
-      let payload = data;
-      if (operationType === "resetPassword") {
-        payload = { ...data, email }; // Adiciona o email ao payload apenas na operação resetPassword
+      let payloadData = data;
+      if (payloadData && operationType === "resetPassword") {
+        payloadData = { ...data, email }; // Adiciona o email ao payload apenas na operação resetPassword
       }
       if (operationType === "login") {
         return;
@@ -247,6 +247,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
             setEmail((data as z.infer<typeof FormSchemaForgotPassword>).email);
             onTabChange(changeTab);
+            console.log(email)
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
