@@ -244,10 +244,12 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           if (operationType === "register" && onTabChange && changeTab) {
             onTabChange(changeTab);
           }
-          if (operationType === "forgotPassword" && onTabChange && changeTab) {
+          if (operationType === "forgotPassword") {
             setEmail((data as z.infer<typeof FormSchemaForgotPassword>).email);
-            onTabChange(changeTab);
             console.log(email)
+          }
+          if (operationType === "forgotPassword" && onTabChange && changeTab) {
+            onTabChange(changeTab);           
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
