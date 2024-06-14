@@ -9,6 +9,7 @@ import { dialogLexicon } from "../lexicon/pt";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { stat } from "fs";
+import { useState } from "react";
 
 const FormSchemaLogin = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -52,6 +53,7 @@ const FormSchemaResetPassword = z.object({
 const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
+  const [email, setEmail] = useState("");
 
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
@@ -152,7 +154,12 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     ) => {
       const { endPoint, operationType } = getEndpoint(data);
       // const url = `${process.env.NEXT_PUBLIC_API_URL}${endPoint}`;
+      
       const url = endPoint;
+      let payload = data;
+      if (operationType === "resetPassword") {
+        payload = { ...data, email }; // Adiciona o email ao payload apenas na operação resetPassword
+      }
       if (operationType === "login") {
         return;
       } else {
@@ -238,6 +245,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             onTabChange(changeTab);
           }
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
+            setEmail((data as z.infer<typeof FormSchemaForgotPassword>).email);
             onTabChange(changeTab);
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
