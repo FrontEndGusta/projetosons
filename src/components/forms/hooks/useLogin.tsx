@@ -235,6 +235,10 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
         const statusCode = dataResponse?.data?.status || dataResponse.status;
         const responseMsg = dataResponse?.data?.message || dataResponse.data;
         console.log(dataResponse);
+        if (FormSchemaForgotPassword.safeParse(data).success) {
+          setEmail((data as z.infer<typeof FormSchemaForgotPassword>).email);
+          // Save the email when the forgot password form is submitted
+        }
 
         const title =
           operationType === "login"
