@@ -23,10 +23,10 @@ interface ResetPasswordFormProps {
 }
 
 const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange }) => {
-  const { formResetPassword, mutation, onSubmit } = useLogin((changeTab) =>
+  const { formResetPassword, emailTEST, mutation, onSubmit } = useLogin((changeTab) =>
     onTabChange(changeTab)
   );
-
+ console.log('emailtestnoreset ->', emailTEST)
   return (
     <Card>
       <CardHeader>

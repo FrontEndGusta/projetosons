@@ -302,6 +302,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     FormSchemaForgotPassword,
     formResetPassword,
     mutation,
+    emailTEST,
     onSubmitLogin,
     onSubmit,
   };
