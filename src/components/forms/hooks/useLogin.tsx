@@ -54,6 +54,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
   const [emailTest, setEmailTest] =useState("")
+  console.log(emailTest)
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
     defaultValues: {
@@ -235,6 +236,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
         if (operationType === "passwordCode") {
           // Extract email from dataResponse.data assuming it's under 'email' key
           const email = dataResponse?.data
+          console.log('email const -> ', email)
           setEmailTest(email)
         }
         const title =
