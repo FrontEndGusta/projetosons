@@ -53,7 +53,7 @@ const FormSchemaResetPassword = z.object({
 const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [emailTest, setEmail] = useState("");
 
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
@@ -249,7 +249,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);  
             setEmail(dataResponse?.data) 
-            console.log(email)        
+            console.log(emailTest)        
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
