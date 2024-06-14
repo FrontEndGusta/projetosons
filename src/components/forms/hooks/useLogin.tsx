@@ -256,7 +256,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
-            setEmail(dataResponse?.email)
+            setEmail(dataResponse?.data)
           }
           if (operationType === "resetPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);
