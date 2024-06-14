@@ -53,8 +53,7 @@ const FormSchemaResetPassword = z.object({
 const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
-  const [emailTEST, setEmail] = useState("");
-  console.log('email - >', emailTEST)
+  const [emailTest, setEmailTest] =useState("")
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
     defaultValues: {
@@ -163,7 +162,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       if (operationType === "login") {
         return;
       } else if (operationType === "resetPassword") {
-        const payloadData = { ...data, emailTEST};
+        const payloadData = { ...data, emailTest};
         return await axios.post(url, payloadData);
       } else {
         return await axios.post(url, data);
@@ -233,6 +232,11 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
         const responseMsg = dataResponse?.data?.message || dataResponse.data;
         console.log(dataResponse);
 
+        if (operationType === "passwordCode") {
+          // Extract email from dataResponse.data assuming it's under 'email' key
+          const email = dataResponse?.data
+          setEmailTest(email)
+        }
         const title =
           operationType === "login"
             ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
@@ -243,7 +247,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             : operationType === "passwordCode"
             ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
             : "";
-        console.log(statusCode);
+ 
         if (statusCode === 201 || statusCode === 200) {
           toast({
             title: title,
@@ -256,7 +260,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
-            setEmail(dataResponse?.data)
+            const result = dataResponse.data
           }
           if (operationType === "resetPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);
