@@ -6,28 +6,27 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
-  const { password, email } = await req.json();
+  const { email, password } = await req.json();
 
   await connect();
 
   const user = await User.findOne({
     email,
   });
-  user.password = password;
+
+  if (!user) {
+    return new NextResponse("Usuário não encontrado", {
+      status: 404,
+    });
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 5);
+  user.password = hashedPassword;
   user.code = undefined;
   user.codeExpiration = undefined;
 
-  console.log(user)
-  console.log()
-
-//   if (!user) {
-//     return new NextResponse("A senha não pode ser igual a anterior!", {
-//       status: 400,
-//     });
-//   }
-
   try {
-    await user.save()
+    await user.save();
     return new NextResponse("Senha redefinida com sucesso", { status: 200 });
   } catch (error) {
     return new NextResponse(
