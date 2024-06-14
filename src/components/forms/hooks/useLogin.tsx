@@ -156,10 +156,10 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       // const url = `${process.env.NEXT_PUBLIC_API_URL}${endPoint}`;
       
       const url = endPoint;
-      let payloadData = data;
-      if (payloadData && operationType === "resetPassword") {
-        payloadData = { ...data, email }; // Adiciona o email ao payload apenas na operação resetPassword
-      }
+      // let payloadData = data;
+      // if (payloadData && operationType === "resetPassword") {
+      //   payloadData = { ...data, email }; // Adiciona o email ao payload apenas na operação resetPassword
+      // }
       if (operationType === "login") {
         return;
       } else {
@@ -183,8 +183,10 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
   };
 
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
+    
     try {
       mutation.mutate(values);
+      
       const response = await signIn("Credentials", {
         ...values,
         redirect: false,
@@ -243,10 +245,6 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           });
           if (operationType === "register" && onTabChange && changeTab) {
             onTabChange(changeTab);
-          }
-          if (operationType === "forgotPassword") {
-            setEmail((data as z.infer<typeof FormSchemaForgotPassword>).email);
-            console.log(email)
           }
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);           

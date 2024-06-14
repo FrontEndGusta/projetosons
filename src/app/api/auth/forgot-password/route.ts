@@ -51,10 +51,11 @@ export async function POST(req: Request) {
   try {
     await transporter.sendMail(mailOptions);
     await user.save();
-    return new NextResponse(
-      "E-mail foi enviado com o código de redefinição de senha",
-      { status: 200 }
-    );
+    NextResponse.json({
+      message: "E-mail foi enviado com o código de redefinição de senha",
+      email: user.email,
+      status: 200,
+    });
   } catch (error) {
     return new NextResponse(
       error instanceof Error ? error.message : "Unknown error",
