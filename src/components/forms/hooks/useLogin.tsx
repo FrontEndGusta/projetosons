@@ -53,7 +53,7 @@ const FormSchemaResetPassword = z.object({
 const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [emailTEST, setEmail] = useState("");
 
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
@@ -163,14 +163,14 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       if (operationType === "login") {
         return;
       } else if (operationType === "resetPassword") {
-        const payloadData = { ...data, email};
+        const payloadData = { ...data, emailTEST};
         return await axios.post(url, payloadData);
       } else {
         return await axios.post(url, data);
       }
     },
   });
-
+  console.log(emailTEST)
   const resetForm = (operationType: string) => {
     if (operationType === "login") {
       formLogin.reset();
