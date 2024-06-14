@@ -247,7 +247,9 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
             onTabChange(changeTab);
           }
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
-            onTabChange(changeTab);           
+            onTabChange(changeTab);  
+            setEmail(dataResponse?.data) 
+            console.log(email)        
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
