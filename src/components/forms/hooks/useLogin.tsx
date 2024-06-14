@@ -53,7 +53,7 @@ const FormSchemaResetPassword = z.object({
 const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
-  const [emailTest, setEmailTest] = useState("");
+  const [email, setEmail] = useState("");
 
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
@@ -162,6 +162,9 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       // }
       if (operationType === "login") {
         return;
+      } else if (operationType === "resetPassword") {
+        const payloadData = { ...data, email};
+        return await axios.post(url, payloadData);
       } else {
         return await axios.post(url, data);
       }
@@ -181,11 +184,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       formResetPassword.reset();
     }
   };
-  console.log('valor de emailtest', emailTest)
-
-  useEffect(() => {
-    console.log('E-mail capturado2:', emailTest);
-  }, [emailTest]);
+ 
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
     
     try {
@@ -226,6 +225,10 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       | z.infer<typeof FormSchemaPasswordCode>
       | z.infer<typeof FormSchemaResetPassword>
   ) => {
+    if (FormSchemaForgotPassword.safeParse(data).success) {
+      setEmail((data as z.infer<typeof FormSchemaForgotPassword>).email);
+      // Save the email when the forgot password form is submitted
+    }
     mutation.mutate(data, {
       onSuccess: (dataResponse: any) => {
         const { operationType, changeTab } = getEndpoint(data);
@@ -253,7 +256,6 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           }
           if (operationType === "forgotPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);    
-            setEmailTest(dataResponse?.data)   
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
