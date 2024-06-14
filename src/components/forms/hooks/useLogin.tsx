@@ -268,7 +268,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           });
         }
 
-        resetForm(operationType);
+       
       },
       onError: (error) => {
         const { operationType } = getEndpoint(data);
