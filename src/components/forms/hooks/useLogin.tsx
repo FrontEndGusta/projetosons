@@ -187,6 +187,8 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
   // };
 
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
+    const email = values.email
+    setStoredEmail(email)
     try {
       mutation.mutate(values);
 
@@ -226,11 +228,11 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
   ) => {
     const { operationType } = getEndpoint(data);
 
-    if (operationType === "forgotPassword") {
-      const email = (data as z.infer<typeof FormSchemaForgotPassword>).email;
-      setStoredEmail(email); // Armazena o email quando esqueceu a senha
-      console.log("Stored Email:", email);
-    }
+    // if (operationType === "forgotPassword") {
+    //   const email = (data as z.infer<typeof FormSchemaForgotPassword>).email;
+    //   setStoredEmail(email); // Armazena o email quando esqueceu a senha
+    //   console.log("Stored Email:", email);
+    // }
     mutation.mutate(data, {
       onSuccess: (dataResponse: any) => {
         const { operationType, changeTab } = getEndpoint(data);
