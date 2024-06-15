@@ -3,11 +3,13 @@ import { useEffect } from "react";
 import Login from "@/components/forms/Login";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import useLogin from "@/components/forms/hooks/useLogin";
 
 export default function PageLogin() {
   const router = useRouter();
   const { data: session } = useSession();
-
+  const { storedEmail } = useLogin();
+  console.log('stored em login =>', storedEmail)
   useEffect(() => {
     if (session) {
       router.push("/");
