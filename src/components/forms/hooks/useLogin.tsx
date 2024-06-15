@@ -187,7 +187,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
   // };
 
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
-    const email = values.email
+    const email = (values as z.infer<typeof FormSchemaForgotPassword>).email;
     setStoredEmail(email)
     try {
       mutation.mutate(values);
