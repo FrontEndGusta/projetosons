@@ -185,7 +185,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
   //     formResetPassword.reset();
   //   }
   // };
-
+  console.log(storedEmail)
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
     const email = (values as z.infer<typeof FormSchemaForgotPassword>).email;
     setStoredEmail(email)
