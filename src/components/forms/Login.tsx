@@ -24,7 +24,7 @@ import FormCodigo from "./FormCodigo";
 import ResetPasswordForm from "./ResetPassword";
 
 const Login = () => {
-  const { formLogin, formForgotPassword, mutation, onSubmitLogin } = useLogin(); // Use o hook useLogin aqui
+  const { formLogin, formForgotPassword, mutation, emailTest, onSubmitLogin } = useLogin(); // Use o hook useLogin aqui
   const [activeTab, setActiveTab] = useState("entrar");
 
   const onTabChange = (value: string) => {
@@ -125,7 +125,7 @@ const Login = () => {
         <FormCodigo onTabChange={onTabChange} />
       </TabsContent>
       <TabsContent value="formResetPassword">
-        <ResetPasswordForm onTabChange={onTabChange} />
+        <ResetPasswordForm onTabChange={onTabChange} emailTest={emailTest} />
       </TabsContent>
     </Tabs>
   );

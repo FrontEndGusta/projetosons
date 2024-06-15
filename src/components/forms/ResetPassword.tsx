@@ -20,12 +20,17 @@ import useLogin from "./hooks/useLogin";
 
 interface ResetPasswordFormProps {
   onTabChange: (value: string) => void;
+  emailTest: string
 }
 
-const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange }) => {
+const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange, emailTest  }) => {
   const { formResetPassword, mutation, onSubmit } = useLogin((changeTab) =>
     onTabChange(changeTab)
   );
+
+  const handleSubmit = (data: any) => {
+    onSubmit({ ...data, email: emailTest });
+  };
 
   return (
     <Card>
@@ -38,7 +43,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange }) =>
       <CardHeader>
         <Form {...formResetPassword}>
           <form
-            onSubmit={formResetPassword.handleSubmit(onSubmit)}
+            onSubmit={formResetPassword.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
 

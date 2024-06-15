@@ -54,7 +54,8 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
   const [emailTest, setEmailTest] =useState("")
-  console.log(emailTest)
+
+  //parei aq e na const
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
     defaultValues: {
@@ -163,7 +164,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       if (operationType === "login") {
         return;
       } else if (operationType === "resetPassword") {
-        const payloadData = { ...data, emailTest};
+        const payloadData = { ...data, email: emailTest};
         return await axios.post(url, payloadData);
       } else {
         return await axios.post(url, data);
@@ -306,6 +307,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     FormSchemaForgotPassword,
     formResetPassword,
     mutation,
+    emailTest,
     onSubmitLogin,
     onSubmit,
   };
