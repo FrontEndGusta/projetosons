@@ -32,11 +32,11 @@ interface FormCodigoProps {
 }
 
 const FormCodigo: React.FC<FormCodigoProps> = ({ onTabChange }) => {
-  const { formPasswordCode, mutation, storedEmail, onSubmit } = useLogin((changeTab) =>
+  const { formPasswordCode, mutation, onSubmit } = useLogin((changeTab) =>
     onTabChange(changeTab)
   );
 
-  console.log('email no formCodigo ->', storedEmail)
+
 
   return (
     <>

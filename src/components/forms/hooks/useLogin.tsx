@@ -8,7 +8,8 @@ import { useMutation } from "@tanstack/react-query";
 import { dialogLexicon } from "../lexicon/pt";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { stat } from "fs";
+import { useEffect, useState } from "react";
 
 const FormSchemaLogin = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -53,8 +54,8 @@ const FormSchemaResetPassword = z
 const useLogin = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
-  // Estado para armazenar o email
-  const [storedEmail, setStoredEmail] = useState("");
+  const [emailTest, setEmailTest] = useState("");
+  console.log(emailTest);
   //parei aq e na const
   const formLogin = useForm({
     resolver: zodResolver(FormSchemaLogin),
@@ -164,7 +165,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       if (operationType === "login") {
         return;
       } else if (operationType === "resetPassword") {
-        const payloadData = { ...data, email: storedEmail };
+        const payloadData = { ...data, email: emailTest };
         return await axios.post(url, payloadData);
       } else {
         return await axios.post(url, data);
@@ -172,23 +173,21 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     },
   });
 
-  // const resetForm = (operationType: string) => {
-  //   if (operationType === "login") {
-  //     formLogin.reset();
-  //   } else if (operationType === "register") {
-  //     formRegister.reset();
-  //   } else if (operationType === "forgotPassword") {
-  //     formForgotPassword.reset();
-  //     // } else if (operationType === "passwordCode") {
-  //     //   formPasswordCode.reset();
-  //   } else if (operationType === "resetPassword") {
-  //     formResetPassword.reset();
-  //   }
-  // };
-  console.log(storedEmail)
+  const resetForm = (operationType: string) => {
+    if (operationType === "login") {
+      formLogin.reset();
+    } else if (operationType === "register") {
+      formRegister.reset();
+    } else if (operationType === "forgotPassword") {
+      formForgotPassword.reset();
+    } else if (operationType === "passwordCode") {
+      formPasswordCode.reset();
+    } else if (operationType === "resetPassword") {
+      formResetPassword.reset();
+    }
+  };
+
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
-    const email = (values as z.infer<typeof FormSchemaForgotPassword>).email;
-    setStoredEmail(email)
     try {
       mutation.mutate(values);
 
@@ -226,20 +225,21 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
       | z.infer<typeof FormSchemaPasswordCode>
       | z.infer<typeof FormSchemaResetPassword>
   ) => {
-    const { operationType } = getEndpoint(data);
-
-    // if (operationType === "forgotPassword") {
-    //   const email = (data as z.infer<typeof FormSchemaForgotPassword>).email;
-    //   setStoredEmail(email); // Armazena o email quando esqueceu a senha
-    //   console.log("Stored Email:", email);
-    // }
     mutation.mutate(data, {
       onSuccess: (dataResponse: any) => {
         const { operationType, changeTab } = getEndpoint(data);
+
         const statusCode = dataResponse?.data?.status || dataResponse.status;
         const responseMsg = dataResponse?.data?.message || dataResponse.data;
+
         console.log(dataResponse);
 
+        if (operationType === "passwordCode") {
+          // Extract email from dataResponse.data assuming it's under 'email' key
+          const email = dataResponse?.data;
+          setEmailTest(email);
+          console.log("email const -> ", email);
+        }
         const title =
           operationType === "login"
             ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
@@ -263,6 +263,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           }
           if (operationType === "passwordCode" && onTabChange && changeTab) {
             onTabChange(changeTab);
+            const result = dataResponse.data;
           }
           if (operationType === "resetPassword" && onTabChange && changeTab) {
             onTabChange(changeTab);
@@ -291,10 +292,14 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           description: error.message || "Ocorreu um erro inesperado.",
         });
 
-        // resetForm(operationType);
+        resetForm(operationType);
       },
     });
   };
+
+  useEffect(()=> {
+    console.log('monitorando email -> ', emailTest)
+  },[emailTest])
 
   return {
     formRegister,
@@ -304,7 +309,6 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     FormSchemaForgotPassword,
     formResetPassword,
     mutation,
-    storedEmail,
     onSubmitLogin,
     onSubmit,
   };

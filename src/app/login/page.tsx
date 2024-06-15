@@ -8,8 +8,7 @@ import useLogin from "@/components/forms/hooks/useLogin";
 export default function PageLogin() {
   const router = useRouter();
   const { data: session } = useSession();
-  const { storedEmail } = useLogin();
-  console.log('stored em login =>', storedEmail)
+
   useEffect(() => {
     if (session) {
       router.push("/");
