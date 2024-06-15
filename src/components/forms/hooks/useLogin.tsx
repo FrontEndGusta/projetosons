@@ -172,19 +172,19 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     },
   });
 
-  const resetForm = (operationType: string) => {
-    if (operationType === "login") {
-      formLogin.reset();
-    } else if (operationType === "register") {
-      formRegister.reset();
-    } else if (operationType === "forgotPassword") {
-      formForgotPassword.reset();
-      // } else if (operationType === "passwordCode") {
-      //   formPasswordCode.reset();
-    } else if (operationType === "resetPassword") {
-      formResetPassword.reset();
-    }
-  };
+  // const resetForm = (operationType: string) => {
+  //   if (operationType === "login") {
+  //     formLogin.reset();
+  //   } else if (operationType === "register") {
+  //     formRegister.reset();
+  //   } else if (operationType === "forgotPassword") {
+  //     formForgotPassword.reset();
+  //     // } else if (operationType === "passwordCode") {
+  //     //   formPasswordCode.reset();
+  //   } else if (operationType === "resetPassword") {
+  //     formResetPassword.reset();
+  //   }
+  // };
 
   async function onSubmitLogin(values: z.infer<typeof FormSchemaLogin>) {
     try {
@@ -289,7 +289,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           description: error.message || "Ocorreu um erro inesperado.",
         });
 
-        resetForm(operationType);
+        // resetForm(operationType);
       },
     });
   };
