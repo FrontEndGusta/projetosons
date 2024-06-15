@@ -218,30 +218,30 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
     }
   }
 
-  const onSubmit = async (
-    data:
+  async function onSubmit(
+    values:
       | z.infer<typeof FormSchemaRegister>
       | z.infer<typeof FormSchemaForgotPassword>
       | z.infer<typeof FormSchemaPasswordCode>
       | z.infer<typeof FormSchemaResetPassword>
-  ) => {
+  ) {
+    
     try {
-      const dataResponse: any = await mutation.mutateAsync(data);
-  
-      const { operationType, changeTab } = getEndpoint(data);
-  
-      const statusCode = dataResponse?.data?.status || dataResponse.status;
-      const responseMsg = dataResponse?.data?.message || dataResponse.data;
-  
+      const dataResponse = await mutation.mutateAsync(values);
+      const { operationType, changeTab } = getEndpoint(values);
+
+      const statusCode = dataResponse?.data?.status || dataResponse?.status;
+      const responseMsg = dataResponse?.data?.message || dataResponse?.data;
+
       console.log(dataResponse);
-  
+
       if (operationType === "passwordCode") {
-        // Extraindo o email da resposta, supondo que esteja sob a chave 'email'
-        const email = dataResponse?.data
-        setEmailTest(email); // Assumindo que você tem uma função para definir o estado do email
-        console.log("Email capturado -> ", email);
+        // Extract email from dataResponse.data assuming it's under 'email' key
+        const email = dataResponse?.data;
+        setEmailTest(email);
+        console.log("email const -> ", email);
       }
-  
+
       const title =
         operationType === "login"
           ? dialogLexicon.SUCCESS_MESSAGES.loginSuccess
@@ -252,7 +252,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           : operationType === "passwordCode"
           ? dialogLexicon.SUCCESS_MESSAGES.codeVerifiedSuccess
           : "";
-  
+
       if (statusCode === 201 || statusCode === 200) {
         toast({
           title: title,
@@ -265,7 +265,6 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
         }
         if (operationType === "passwordCode" && onTabChange && changeTab) {
           onTabChange(changeTab);
-          // const result = dataResponse.data; // Aqui você pode acessar os dados retornados pela mutação
         }
         if (operationType === "resetPassword" && onTabChange && changeTab) {
           onTabChange(changeTab);
@@ -277,7 +276,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
         });
       }
     } catch (error) {
-      const { operationType } = getEndpoint(data);
+      const { operationType } = getEndpoint(values);
       const title =
         operationType === "login"
           ? dialogLexicon.ERROR_MESSAGES.loginError
@@ -286,21 +285,21 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           : operationType === "forgotPassword"
           ? dialogLexicon.ERROR_MESSAGES.codeError
           : "";
-      // Implemente a manipulação de erro aqui, como exibição de mensagem de erro
+
+      // implementar msg de erro de redefinição de senha e código aqui
       toast({
         variant: "destructive",
         title: title,
-        description: "Ocorreu um erro inesperado.",
+        description: error instanceof Error || "Ocorreu um erro inesperado.",
       });
-  
+
       resetForm(operationType);
     }
-  };
-  
+  }
 
-  useEffect(()=> {
-    console.log('monitorando email -> ', emailTest)
-  },[emailTest])
+  useEffect(() => {
+    console.log("monitorando email -> ", emailTest);
+  }, [emailTest]);
 
   return {
     formRegister,
