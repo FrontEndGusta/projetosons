@@ -26,7 +26,7 @@ const useCodigo = (onTabChange?: (changeTab: string) => void) => {
   const router = useRouter();
   const {email} =useForgotPassword()
   const mutation = useMutation({ mutationFn: onSubmitCode });
-
+  console.log('email no usecodigo', email)
   async function onSubmitCode(
     values: z.infer<typeof FormSchemaCode>
   ) {
