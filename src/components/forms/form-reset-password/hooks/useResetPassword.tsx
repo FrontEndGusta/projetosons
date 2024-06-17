@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { dialogLexicon } from "@/components/forms/lexicon/pt";
 import { useRouter } from "next/navigation";
 import changeTab from "@/utils/changeTab";
+import useForgotPassword from "../../form-forgot-password/hooks/useForgotPassword";
 
 const FormSchemaResetPassword = z
   .object({
@@ -32,14 +33,14 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
 
   const { toast } = useToast();
   const router = useRouter();
-
+  const {email} = useForgotPassword()
   const mutation = useMutation({ mutationFn: onSubmitResetPassword });
 
   async function onSubmitResetPassword(
     values: z.infer<typeof FormSchemaResetPassword>
   ) {
     try {
-      const response = await axios.post("/api/auth/reset-password", values);
+      const response = await axios.post("/api/auth/reset-password", {...values, email});
       const statusCode = response?.data?.status || response?.status;
 
       if (statusCode === 201 || statusCode === 200) {

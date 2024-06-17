@@ -68,6 +68,7 @@ const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
     data: mutation.data,
     formForgotPassword,
     isLoading: mutation.isPending,
+    email,
     onSubmitForgotPassword,
   };
 };
