@@ -9,6 +9,7 @@ import { dialogLexicon } from "@/components/forms/lexicon/pt";
 import { useRouter } from "next/navigation";
 import changeTab from "@/utils/changeTab";
 import useForgotPassword from "../../form-forgot-password/hooks/useForgotPassword";
+import { useEffect } from "react";
 
 const FormSchemaResetPassword = z
   .object({
@@ -33,7 +34,7 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
 
   const { toast } = useToast();
   const router = useRouter();
-  const {email} = useForgotPassword()
+  const {email, onSubmitForgotPassword} = useForgotPassword()
   console.log(email)
   const mutation = useMutation({ mutationFn: onSubmitResetPassword });
 
@@ -41,6 +42,7 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
     values: z.infer<typeof FormSchemaResetPassword>
   ) {
     try {
+        console.log('Email recebido em onSubmitResetPassword:', email);
       const response = await axios.post("/api/auth/reset-password", {...values, email});
       const statusCode = response?.data?.status || response?.status;
 
@@ -68,7 +70,10 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
       });
     }
   }
-
+  useEffect(() => {
+    console.log('Email atualizado:', email); // Verifica o email atualizado
+    // Você pode adicionar outras operações dependendo do email aqui
+  }, [email]);
   return {
     isPending: mutation.isPending,
     error: mutation.error,
