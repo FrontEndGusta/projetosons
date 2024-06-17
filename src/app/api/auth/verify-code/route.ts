@@ -6,7 +6,7 @@ import crypto from "crypto";
 import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
-  const { code } = await req.json();
+  const { code, email } = await req.json();
 
   await connect();
 

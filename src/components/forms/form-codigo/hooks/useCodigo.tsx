@@ -8,6 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { dialogLexicon } from "@/components/forms/lexicon/pt";
 import { useRouter } from "next/navigation";
 import changeTab from "@/utils/changeTab";
+import useForgotPassword from "../../form-forgot-password/hooks/useForgotPassword";
 
 const FormSchemaCode = z.object({
     code: z.string().min(6, dialogLexicon.ERROR_MESSAGES.codeError),
@@ -23,14 +24,14 @@ const useCodigo = (onTabChange?: (changeTab: string) => void) => {
 
   const { toast } = useToast();
   const router = useRouter();
-
+  const {email} =useForgotPassword()
   const mutation = useMutation({ mutationFn: onSubmitCode });
 
   async function onSubmitCode(
     values: z.infer<typeof FormSchemaCode>
   ) {
     try {
-      const response = await axios.post("/api/auth/verify-code", values);
+      const response = await axios.post("/api/auth/verify-code", {...values, email});
       const statusCode = response?.data?.status || response?.status;
 
       if (statusCode === 201 || statusCode === 200) {
