@@ -31,8 +31,7 @@ const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
   async function onSubmitForgotPassword(
     values: z.infer<typeof FormSchemaForgotPassword>
   ) {
-    setEmail(values.email)
-    console.log('email dentro do onsubmit  -> ', email)
+ 
     try {
       const response = await axios.post("/api/auth/forgot-password", values);
       const statusCode = response?.data?.status || response?.status;
@@ -42,6 +41,8 @@ const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
           title: dialogLexicon.SUCCESS_MESSAGES.forgotPasswordSuccess,
         });
 
+        setEmail(values.email);
+        console.log('email dentro do onsubmit  -> ', email)
         if (onTabChange) onTabChange(changeTab?.forgotPasswordToCode);
       } else {
         const errorMessage = response?.data?.message;
@@ -74,7 +75,4 @@ const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
 };
 
 export default useForgotPassword;
-function usestate(arg0: string): [any, any] {
-    throw new Error("Function not implemented.");
-}
 
