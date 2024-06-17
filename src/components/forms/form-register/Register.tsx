@@ -16,14 +16,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import useLogin from "./hooks/useLogin";
+import useRegister from "./hooks/useRegister";
 
 interface RegisterFormProps {
   onTabChange: (value: string) => void;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onTabChange }) => {
-  const { formRegister, mutation, onSubmit } = useLogin((changeTab) =>
+  const { formRegister, isLoading, onSubmitRegister } = useRegister((changeTab) =>
     onTabChange(changeTab)
   );
 
@@ -44,7 +44,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onTabChange }) => {
       <CardHeader>
         <Form {...formRegister}>
           <form
-            onSubmit={formRegister.handleSubmit(onSubmit)}
+            onSubmit={formRegister.handleSubmit(onSubmitRegister)}
             className="space-y-6"
           >
             <FormField
@@ -128,7 +128,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onTabChange }) => {
             />
 
             <div className="flex justify-end">
-              {mutation.isPending ? (
+              {isLoading ? (
                 <Button disabled>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                   Enviando...

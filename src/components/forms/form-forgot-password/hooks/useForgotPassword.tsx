@@ -1,0 +1,79 @@
+"use client";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { dialogLexicon } from "@/components/forms/lexicon/pt";
+import { useRouter } from "next/navigation";
+import changeTab from "@/utils/changeTab";
+import { useState } from "react";
+
+const FormSchemaForgotPassword = z.object({
+  email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
+});
+
+const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
+  const formForgotPassword = useForm({
+    resolver: zodResolver(FormSchemaForgotPassword),
+    defaultValues: {
+      email: "",
+    },
+  });
+  const [email, setEmail] = useState('')
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const mutation = useMutation({ mutationFn: onSubmitForgotPassword });
+  
+  console.log('email fora  -> ', email)
+  async function onSubmitForgotPassword(
+    values: z.infer<typeof FormSchemaForgotPassword>
+  ) {
+    setEmail(values.email)
+    console.log('email dentro do onsubmit  -> ', email)
+    try {
+      const response = await axios.post("/api/auth/forgot-password", values);
+      const statusCode = response?.data?.status || response?.status;
+
+      if (statusCode === 201 || statusCode === 200) {
+        toast({
+          title: dialogLexicon.SUCCESS_MESSAGES.forgotPasswordSuccess,
+        });
+
+        if (onTabChange) onTabChange(changeTab?.forgotPasswordToCode);
+      } else {
+        const errorMessage = response?.data?.message;
+        toast({
+          variant: "destructive",
+          title: errorMessage,
+        });
+      }
+    } catch (err: any) {
+      let errorMessage =
+        err.response?.data?.error ||
+        "Ocorreu um erro ao enviar o email. Por favor, tente novamente.";
+      toast({
+        variant: "destructive",
+        title: dialogLexicon.ERROR_MESSAGES.codeError,
+        description: errorMessage,
+      });
+    }
+  }
+
+  return {
+    isPending: mutation.isPending,
+    error: mutation.error,
+    data: mutation.data,
+    formForgotPassword,
+    isLoading: mutation.isPending,
+    onSubmitForgotPassword,
+  };
+};
+
+export default useForgotPassword;
+function usestate(arg0: string): [any, any] {
+    throw new Error("Function not implemented.");
+}
+

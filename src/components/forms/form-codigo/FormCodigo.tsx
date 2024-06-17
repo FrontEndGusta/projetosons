@@ -15,9 +15,7 @@ import {
   Card,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
-
 import { ReloadIcon } from "@radix-ui/react-icons";
 import {
   InputOTP,
@@ -25,31 +23,29 @@ import {
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import useLogin from "./hooks/useLogin";
+import useCodigo from "./hooks/useCodigo";
 
 interface FormCodigoProps {
   onTabChange: (value: string) => void;
 }
 
 const FormCodigo: React.FC<FormCodigoProps> = ({ onTabChange }) => {
-  const { formPasswordCode, mutation, onSubmit } = useLogin((changeTab) =>
+  const { formCode, isLoading, onSubmitCode } = useCodigo((changeTab) =>
     onTabChange(changeTab)
   );
-
-
 
   return (
     <>
       <TabsContent value="formCodigo">
         <Card>
           <CardHeader>
-            <Form {...formPasswordCode}>
+            <Form {...formCode}>
               <form
-                onSubmit={formPasswordCode.handleSubmit(onSubmit)}
+                onSubmit={formCode.handleSubmit(onSubmitCode)}
                 className="space-y-6"
               >
                 <FormField
-                  control={formPasswordCode.control}
+                  control={formCode.control}
                   name="code"
                   render={({ field }) => (
                     <FormItem>
@@ -77,7 +73,7 @@ const FormCodigo: React.FC<FormCodigoProps> = ({ onTabChange }) => {
                   )}
                 />
                 <div className="flex justify-end">
-                  {mutation.isPending ? (
+                  {isLoading ? (
                     <Button disabled>
                       <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                       Enviando...

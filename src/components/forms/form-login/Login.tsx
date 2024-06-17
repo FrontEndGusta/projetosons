@@ -18,13 +18,13 @@ import {
 } from "@/components/ui/card";
 import useLogin from "./hooks/useLogin";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import RegisterForm from "./Register";
-import ForgotPasswordForm from "./ForgotPassword";
-import FormCodigo from "./FormCodigo";
-import ResetPasswordForm from "./ResetPassword";
+import RegisterForm from "../form-register/Register";
+import ForgotPasswordForm from "../form-forgot-password/ForgotPassword";
+import FormCodigo from "../form-codigo/FormCodigo";
+import ResetPasswordForm from "../form-reset-password/ResetPassword";
 
 const Login = () => {
-  const { formLogin, formForgotPassword, mutation, onSubmitLogin } = useLogin(); // Use o hook useLogin aqui
+  const { formLogin, isLoading, onSubmitLogin } = useLogin(); // Use o hook useLogin aqui
   const [activeTab, setActiveTab] = useState("entrar");
 
   const onTabChange = (value: string) => {
@@ -100,7 +100,7 @@ const Login = () => {
                   </span>
                 </CardDescription>
                 <div className="flex justify-end">
-                  {mutation.isPending ? (
+                  {isLoading ? (
                     <Button disabled>
                       <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                       Entrando...

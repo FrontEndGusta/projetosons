@@ -257,9 +257,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
         toast({
           title: title,
         });
-        if (operationType === "register" && onTabChange && changeTab) {
-          onTabChange(changeTab);
-        }
+      
         if (operationType === "forgotPassword" && onTabChange && changeTab) {
           onTabChange(changeTab);
         }

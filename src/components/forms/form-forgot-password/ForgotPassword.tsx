@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/card";
 
 import { ReloadIcon } from "@radix-ui/react-icons";
-import useLogin from "./hooks/useLogin";
+import useForgotPassword from "./hooks/useForgotPassword";
 
 interface ForgotPasswordFormProps {
   onTabChange: (value: string) => void;
@@ -29,7 +29,7 @@ interface ForgotPasswordFormProps {
 const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
   onTabChange,
 }) => {
-  const { formForgotPassword, mutation, onSubmit } = useLogin(
+  const { formForgotPassword, isLoading, onSubmitForgotPassword } = useForgotPassword(
     (changeTab) => onTabChange(changeTab)
   );
 
@@ -46,7 +46,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
           <CardHeader>
             <Form {...formForgotPassword}>
               <form
-                onSubmit={formForgotPassword.handleSubmit(onSubmit)}
+                onSubmit={formForgotPassword.handleSubmit(onSubmitForgotPassword)}
                 className="space-y-6"
               >
                 <FormField
@@ -67,7 +67,7 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
                 />
 
                 <div className="flex justify-end">
-                  {mutation.isPending ? (
+                  {isLoading ? (
                     <Button disabled>
                       <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                       Enviando...

@@ -16,18 +16,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ReloadIcon } from "@radix-ui/react-icons";
-import useLogin from "./hooks/useLogin";
+import useResetPassword from "./hooks/useResetPassword";
 
 interface ResetPasswordFormProps {
   onTabChange: (value: string) => void;
 }
 
 const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange }) => {
-  const { formResetPassword, mutation, onSubmit } = useLogin((changeTab) =>
+  const { formResetPassword, isLoading, onSubmitResetPassword } = useResetPassword((changeTab) =>
     onTabChange(changeTab)
   );
-
-
 
   return (
     <Card>
@@ -40,7 +38,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange }) =>
       <CardHeader>
         <Form {...formResetPassword}>
           <form
-            onSubmit={formResetPassword.handleSubmit(onSubmit)}
+            onSubmit={formResetPassword.handleSubmit(onSubmitResetPassword)}
             className="space-y-6"
           >
 
@@ -79,7 +77,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onTabChange }) =>
             />
 
             <div className="flex justify-end">
-              {mutation.isPending ? (
+              {isLoading ? (
                 <Button disabled>
                   <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                   Redefinindo...

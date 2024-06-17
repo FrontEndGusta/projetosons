@@ -7,14 +7,16 @@ export const dialogLexicon = {
     confirmPassword: "A senha deve ter pelo menos 6 caracteres.",
     loginError: "Ocorreu um erro ao realizar o login",
     registerError: "Ocorreu um erro ao realizar o cadastro",
-    codeError: 'o código deve ter pelo menos 6 caracteres.'
+    codeError: 'O código deve ter pelo menos 6 caracteres.',
+    codeSendError: 'Ocorreu um erro ao enviar o código'
   },
 
   SUCCESS_MESSAGES: {
-    loginSuccess: "Login realizado com sucesso",
+    loginSuccess: "Login realizado com sucesso!",
     registerSuccess: "Registro realizado com sucesso!",
-    codeSuccess: "Código enviado com sucesso",
-    forgotPasswordSuccess: "Código enviado com sucesso",
-    codeVerifiedSuccess: "Código verificado com sucesso.",
+    codeSuccess: "Código enviado com sucesso!",
+    forgotPasswordSuccess: "Código enviado com sucesso!",
+    codeVerifiedSuccess: "Código verificado com sucesso!",
+    resetPasswordSuccess: "Senha redefinida com sucesso!"
   },
 };
