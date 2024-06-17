@@ -34,6 +34,7 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
   const {email} = useForgotPassword()
+  console.log(email)
   const mutation = useMutation({ mutationFn: onSubmitResetPassword });
 
   async function onSubmitResetPassword(
