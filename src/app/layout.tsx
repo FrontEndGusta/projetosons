@@ -6,6 +6,7 @@ import QueryProvider from "@/components/QueryProvider"; // Importe o componente 
 import AuthProvider from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Header from "@/components/header/Header";
+import { EmailProvider } from "@/context/contextEmail";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning> 
       <AuthProvider>
+        <EmailProvider>
         <body className={inter.className}>
           <ThemeProvider
             attribute="class"
@@ -38,6 +40,7 @@ export default function RootLayout({
           </QueryProvider>
           </ThemeProvider>
         </body>
+        </EmailProvider>
       </AuthProvider>
     </html>
   );

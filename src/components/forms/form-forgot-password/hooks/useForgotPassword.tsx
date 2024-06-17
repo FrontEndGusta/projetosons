@@ -9,6 +9,7 @@ import { dialogLexicon } from "@/components/forms/lexicon/pt";
 import { useRouter } from "next/navigation";
 import changeTab from "@/utils/changeTab";
 import { useState } from "react";
+import { useEmail } from "@/context/contextEmail";
 
 const FormSchemaForgotPassword = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -21,7 +22,7 @@ const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
       email: "",
     },
   });
-  const [email, setEmail] = useState('')
+  const { email, setEmail } = useEmail();
   const { toast } = useToast();
   const router = useRouter();
 

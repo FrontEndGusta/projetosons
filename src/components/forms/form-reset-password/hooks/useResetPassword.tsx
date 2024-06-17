@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import changeTab from "@/utils/changeTab";
 import useForgotPassword from "../../form-forgot-password/hooks/useForgotPassword";
 import { useEffect } from "react";
+import { useEmail } from "@/context/contextEmail";
 
 const FormSchemaResetPassword = z
   .object({
@@ -34,7 +35,7 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
 
   const { toast } = useToast();
   const router = useRouter();
-  const {email, onSubmitForgotPassword} = useForgotPassword()
+  const {email} = useEmail()
   console.log(email)
   const mutation = useMutation({ mutationFn: onSubmitResetPassword });
 
