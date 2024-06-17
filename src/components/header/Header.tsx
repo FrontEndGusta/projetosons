@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
+
 import { ExitIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import {
@@ -16,6 +16,9 @@ import { Button } from "../ui/button";
 export default function Header() {
   const { data: session } = useSession();
   const { setTheme } = useTheme();
+  if(!session ) {
+    return null
+  }
   const userName: string = session?.user?.name
     ? session.user.name.split(" ")[0]
     : "Guest";

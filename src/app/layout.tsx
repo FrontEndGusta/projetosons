@@ -5,8 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import QueryProvider from "@/components/QueryProvider"; // Importe o componente criado
 import AuthProvider from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Header from "@/components/header/Header";
-import { EmailProvider } from "@/context/contextEmail";
+import Header from "@/components/Header/Header";
+import { EmailProvider } from "@/context/EmailContext";
 
 const inter = Inter({ subsets: ["latin"] });
 

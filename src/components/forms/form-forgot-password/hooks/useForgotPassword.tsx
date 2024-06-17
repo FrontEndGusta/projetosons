@@ -8,8 +8,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { dialogLexicon } from "@/components/forms/lexicon/pt";
 import { useRouter } from "next/navigation";
 import changeTab from "@/utils/changeTab";
-import { useState } from "react";
-import { useEmail } from "@/context/contextEmail";
+import { useEmail } from "@/context/EmailContext";
 
 const FormSchemaForgotPassword = z.object({
   email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
@@ -27,12 +26,10 @@ const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
   const router = useRouter();
 
   const mutation = useMutation({ mutationFn: onSubmitForgotPassword });
-  
-  console.log('email fora  -> ', email)
+
   async function onSubmitForgotPassword(
     values: z.infer<typeof FormSchemaForgotPassword>
   ) {
- 
     try {
       const response = await axios.post("/api/auth/forgot-password", values);
       const statusCode = response?.data?.status || response?.status;
@@ -43,7 +40,6 @@ const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
         });
 
         setEmail(values.email);
-        console.log('email dentro do onsubmit  -> ', email)
         if (onTabChange) onTabChange(changeTab?.forgotPasswordToCode);
       } else {
         const errorMessage = response?.data?.message;
@@ -76,4 +72,3 @@ const useForgotPassword = (onTabChange?: (changeTab: string) => void) => {
 };
 
 export default useForgotPassword;
-

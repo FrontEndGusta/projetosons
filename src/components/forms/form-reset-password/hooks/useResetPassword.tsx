@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import changeTab from "@/utils/changeTab";
 import useForgotPassword from "../../form-forgot-password/hooks/useForgotPassword";
 import { useEffect } from "react";
-import { useEmail } from "@/context/contextEmail";
+import { useEmail } from "@/context/EmailContext";
 
 const FormSchemaResetPassword = z
   .object({

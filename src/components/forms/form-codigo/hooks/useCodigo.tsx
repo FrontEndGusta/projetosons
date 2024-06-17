@@ -11,27 +11,28 @@ import changeTab from "@/utils/changeTab";
 import useForgotPassword from "../../form-forgot-password/hooks/useForgotPassword";
 
 const FormSchemaCode = z.object({
-    code: z.string().min(6, dialogLexicon.ERROR_MESSAGES.codeError),
-  });
+  code: z.string().min(6, dialogLexicon.ERROR_MESSAGES.codeError),
+});
 
 const useCodigo = (onTabChange?: (changeTab: string) => void) => {
-    const formCode = useForm({
-        resolver: zodResolver(FormSchemaCode),
-        defaultValues: {
-          code: "",
-        },
-      });
+  const formCode = useForm({
+    resolver: zodResolver(FormSchemaCode),
+    defaultValues: {
+      code: "",
+    },
+  });
 
   const { toast } = useToast();
   const router = useRouter();
-  const {email} =useForgotPassword()
+  const { email } = useForgotPassword();
   const mutation = useMutation({ mutationFn: onSubmitCode });
-  console.log('email no usecodigo', email)
-  async function onSubmitCode(
-    values: z.infer<typeof FormSchemaCode>
-  ) {
+
+  async function onSubmitCode(values: z.infer<typeof FormSchemaCode>) {
     try {
-      const response = await axios.post("/api/auth/verify-code", {...values, email});
+      const response = await axios.post("/api/auth/verify-code", {
+        ...values,
+        email,
+      });
       const statusCode = response?.data?.status || response?.status;
 
       if (statusCode === 201 || statusCode === 200) {

@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import Login from "@/components/forms/form-login/Login";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import useLogin from "@/components/forms/hooks/useLogin";
 
 export default function PageLogin() {
   const router = useRouter();

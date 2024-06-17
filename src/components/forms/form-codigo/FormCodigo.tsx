@@ -11,11 +11,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { TabsContent } from "@/components/ui/tabs";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardHeader } from "@/components/ui/card";
 import { ReloadIcon } from "@radix-ui/react-icons";
 import {
   InputOTP,
