@@ -44,15 +44,15 @@ const useRegister = (onTabChange?: (changeTab: string) => void) => {
   async function onSubmitRegister(values: z.infer<typeof FormSchemaRegister>) {
     try {
       const response = await axios.post("/api/auth/register", values);
-
-      if (response.status === 200 || 201) {
+      const statusCode = response?.data?.status || response?.status;
+      if (statusCode === 201 || statusCode === 200) {
         toast({
           title: dialogLexicon.SUCCESS_MESSAGES.loginSuccess,
         });
 
         if (onTabChange) onTabChange(changeTab?.registerOrresetPasswordToLogin);
       } else {
-        const errorMessage = response?.data?.message
+        const errorMessage = response?.data?.message || dialogLexicon.ERROR_MESSAGES.registerError
         toast({
           variant: "destructive",
           title: errorMessage,
