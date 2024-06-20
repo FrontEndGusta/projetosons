@@ -6,7 +6,7 @@ import QueryProvider from "@/components/QueryProvider"; // Importe o componente 
 import AuthProvider from "@/components/AuthProvider";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { EmailProvider } from "@/context/EmailContext";
-import Header from "@/components/Header/Header";
+import Header from "@/components/header/Header";
 
 const inter = Inter({ subsets: ["latin"] });
 
