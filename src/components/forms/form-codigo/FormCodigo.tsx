@@ -79,9 +79,9 @@ const FormCodigo: React.FC<FormCodigoProps> = ({ onTabChange }) => {
                   )}
                 </div>
                 <CardDescription>
-                  <span
+                  <span className="text-[#7C3AED] dark:text-[#F9FAFB]"
                     onClick={() => onTabChange("recuperarSenha")}
-                    style={{ color: "blue", cursor: "pointer" }}
+                    style={{ cursor: "pointer" }}
                   >
                     Voltar
                   </span>

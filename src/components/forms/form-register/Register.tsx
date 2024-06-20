@@ -33,9 +33,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onTabChange }) => {
         <CardTitle>Faça o cadastro</CardTitle>
         <CardDescription>
           Caso já possua conta criada,{" "}
-          <span
+          <span className="text-[#7C3AED] dark:text-[#F9FAFB]"
             onClick={() => onTabChange("entrar")}
-            style={{ color: "blue", cursor: "pointer" }}
+            style={{ cursor: "pointer" }}
           >
             fazer login
           </span>

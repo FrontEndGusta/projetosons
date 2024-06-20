@@ -44,9 +44,9 @@ const Login = () => {
             <CardTitle>Faça o Login</CardTitle>
             <CardDescription>
               Caso não tenha conta criada,{" "}
-              <span
+              <span className="text-[#7C3AED] dark:text-[#F9FAFB]"
                 onClick={() => onTabChange("registrar")}
-                style={{ color: "blue", cursor: "pointer" }}
+                style={{cursor: "pointer" }}
               >
                 registre-se
               </span>
@@ -92,9 +92,9 @@ const Login = () => {
                 />
                 <CardDescription>
                   Esqueceu sua senha?{" "}
-                  <span
+                  <span className="text-[#7C3AED] dark:text-[#F9FAFB]"
                     onClick={() => onTabChange("recuperarSenha")}
-                    style={{ color: "blue", cursor: "pointer" }}
+                    style={{ cursor: "pointer" }}
                   >
                     Recuperar senha
                   </span>

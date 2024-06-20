@@ -78,9 +78,9 @@ const ForgotPasswordForm: React.FC<ForgotPasswordFormProps> = ({
                 </div>
                 <CardDescription>
                   Voltar para{" "}
-                  <span
+                  <span className="text-[#7C3AED] dark:text-[#F9FAFB]"
                     onClick={() => onTabChange("entrar")}
-                    style={{ color: "blue", cursor: "pointer" }}
+                    style={{ cursor: "pointer" }}
                   >
                     Login
                   </span>
