@@ -8,7 +8,7 @@ const userSchema = new Schema(
     lastName: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    code: { type: String }, // Código de verificação
+    code: { type: String, unique: true }, // Código de verificação
     codeExpiration: { type: Date }, // Data de expiração do código
   },
   { timestamps: true }

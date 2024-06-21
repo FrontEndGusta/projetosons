@@ -13,7 +13,7 @@ const options = NextAuth({
         email: { label: "email", type: "email" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         await connect();
 
         try {
@@ -43,6 +43,14 @@ const options = NextAuth({
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, trigger, session }) {
+      if (trigger === "update") {
+        return { ...token, ...session.user };
+      }
+      return { ...token, ...user };
+    },
+  },
   pages: {
     error: "/login",
   },

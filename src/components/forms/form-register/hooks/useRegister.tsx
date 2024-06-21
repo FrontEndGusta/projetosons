@@ -47,7 +47,7 @@ const useRegister = (onTabChange?: (changeTab: string) => void) => {
       const statusCode = response?.data?.status || response?.status;
       if (statusCode === 201 || statusCode === 200) {
         toast({
-          title: dialogLexicon.SUCCESS_MESSAGES.loginSuccess,
+          title: dialogLexicon.SUCCESS_MESSAGES.registerSuccess,
         });
 
         if (onTabChange) onTabChange(changeTab?.registerOrresetPasswordToLogin);

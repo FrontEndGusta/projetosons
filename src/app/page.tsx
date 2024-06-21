@@ -1,4 +1,5 @@
 import LayoutAdmin from "@/components/LayoutAdmin";
+import { SheetSide } from "@/components/perfil/SheetMenu";
 
 export default function Home() {
   return (

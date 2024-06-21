@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
+import { SheetSide } from "../perfil/SheetMenu";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -25,10 +26,7 @@ export default function Header() {
     <div className="flex gap-4 p-2 pr-10 flex-wrap justify-end">
       {session && (
         <>
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <SheetSide />
           <span className="flex-grow px-2 flex items-center">{`Olá, ${userName}`}</span>
         </>
       )}
