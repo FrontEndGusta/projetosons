@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
-import { SheetSide } from "../perfil/SheetMenu";
+import { SheetSide } from "../perfil/sheetMenu/SheetMenu";
 
 export default function Header() {
   const { data: session } = useSession();

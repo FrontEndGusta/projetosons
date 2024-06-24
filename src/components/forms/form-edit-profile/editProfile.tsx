@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 
 import { ReloadIcon } from "@radix-ui/react-icons";
 import useEditProfile from "./hooks/useEditProfile";
+import DialogResetPassword from "@/components/perfil/dialogResetPassword/DialogResetPassword";
 
 const EditProfileForm: React.FC = () => {
   const { formEditProfile, isLoading, name, onSubmitEditProfile } =
@@ -56,17 +57,20 @@ const EditProfileForm: React.FC = () => {
           />
 
           <div className="flex justify-end">
+            
             {isLoading ? (
               <Button disabled>
                 <ReloadIcon className="mr-2 h-4 w-4 animate-spin" />
                 Enviando...
               </Button>
             ) : (
-              <Button type="submit">Enviar</Button>
+              <Button type="submit" className="w-full">Enviar</Button>
             )}
           </div>
         </form>
       </Form>
+      <div className="flex justify-end"> <DialogResetPassword /></div>
+     
     </>
   );
 };

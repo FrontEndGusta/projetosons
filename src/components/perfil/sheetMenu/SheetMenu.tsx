@@ -15,8 +15,9 @@ import {
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useSession } from "next-auth/react";
+
+import EditProfileForm from "../../forms/form-edit-profile/editProfile";
 import useSheetMenu from "./hooks/useSheetMenu";
-import EditProfileForm from "../forms/form-edit-profile/editProfile";
 export function SheetSide() {
     const {name, email} = useSheetMenu()
   return (

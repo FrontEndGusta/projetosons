@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import changeTab from "@/utils/changeTab";
 import { useEmail } from "@/context/EmailContext";
 import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 const FormSchemaEditProfile = z.object({
   name: z.string().min(2, dialogLexicon.ERROR_MESSAGES.firstName),
@@ -18,8 +19,9 @@ const FormSchemaEditProfile = z.object({
 
 const useEditProfile = () => {
   const { data: session, update } = useSession();
-  const name: string = session?.user?.name || "";
-  const email: string = session?.user?.email || "";
+  const [email, setEmail] = useState(session?.user?.email || "");
+  const [name, setName] = useState(session?.user?.name || "");
+
   const formEditProfile = useForm({
     resolver: zodResolver(FormSchemaEditProfile),
     defaultValues: {
@@ -41,18 +43,24 @@ const useEditProfile = () => {
         email: email,
         newEmail: values.email,
       };
-      const response = await axios.post("/api/auth/edit-profile", updatedValues);
+      const response = await axios.post(
+        "/api/auth/edit-profile",
+        updatedValues
+      );
       const statusCode = response?.data?.status || response?.status;
 
       if (statusCode === 201 || statusCode === 200) {
+        setEmail(updatedValues.newEmail);
+        setName(updatedValues.name);
         await update({
           ...session,
           user: {
             ...session?.user,
-            email: updatedValues.newEmail
-          }
-        })
-        updatedValues.email = updatedValues.newEmail
+            email: updatedValues.newEmail,
+            name: updatedValues.name
+          },
+        });
+        // formEditProfile.reset({ ...values, email: updatedValues.newEmail });
         toast({
           title: "dados atualizados com sucesso.",
         });

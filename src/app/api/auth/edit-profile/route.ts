@@ -11,6 +11,15 @@ export async function POST(req: Request) {
     email,
   });
 
+  if (user) {
+    if (user.name === name && user.email === newEmail) {
+      return NextResponse.json({
+        message: "Nome ou email já cadastrado",
+        status: 409,
+      });
+    }
+  }
+
   if (!user) {
     return new NextResponse("Usuário não encontrado", {
       status: 404,

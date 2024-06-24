@@ -11,8 +11,9 @@ import changeTab from "@/utils/changeTab";
 import useForgotPassword from "../../form-forgot-password/hooks/useForgotPassword";
 import { useEffect } from "react";
 import { useEmail } from "@/context/EmailContext";
+import { useSession } from "next-auth/react";
 
-const FormSchemaResetPassword = z
+const FormSchemaDialogResetPassword = z
   .object({
     password: z.string().min(6, dialogLexicon.ERROR_MESSAGES.password),
     confirmPassword: z
@@ -24,9 +25,9 @@ const FormSchemaResetPassword = z
     path: ["confirmPassword"],
   });
 
-const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
-  const formResetPassword = useForm({
-    resolver: zodResolver(FormSchemaResetPassword),
+const useDialogResetPassword = () => {
+  const formDialogResetPassword = useForm({
+    resolver: zodResolver(FormSchemaDialogResetPassword),
     defaultValues: {
       password: "",
       confirmPassword: "",
@@ -35,15 +36,13 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
 
   const { toast } = useToast();
   const router = useRouter();
-  const {email} = useEmail()
-  console.log(email)
-  const mutation = useMutation({ mutationFn: onSubmitResetPassword });
-
-  async function onSubmitResetPassword(
-    values: z.infer<typeof FormSchemaResetPassword>
+  const { data: session } = useSession();
+  const mutation = useMutation({ mutationFn: onSubmitDialogResetPassword });
+  const email = session?.user?.email
+  async function onSubmitDialogResetPassword(
+    values: z.infer<typeof FormSchemaDialogResetPassword>
   ) {
     try {
-        console.log('Email recebido em onSubmitResetPassword:', email);
       const response = await axios.post("/api/auth/reset-password", {...values, email});
       const statusCode = response?.data?.status || response?.status;
 
@@ -52,7 +51,6 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
           title: dialogLexicon.SUCCESS_MESSAGES.resetPasswordSuccess,
         });
 
-        if (onTabChange) onTabChange(changeTab?.registerOrresetPasswordToLogin);
       } else {
         const errorMessage = response?.data?.message;
         toast({
@@ -76,10 +74,10 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
     isPending: mutation.isPending,
     error: mutation.error,
     data: mutation.data,
-    formResetPassword,
+    formDialogResetPassword,
     isLoading: mutation.isPending,
-    onSubmitResetPassword,
+    onSubmitDialogResetPassword,
   };
 };
 
-export default useResetPassword;
+export default useDialogResetPassword;
