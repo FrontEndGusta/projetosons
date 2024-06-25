@@ -20,6 +20,13 @@ export async function POST(req: Request) {
     });
   }
 
+  const isSamePassword = await bcrypt.compare(password, user.password);
+  if (isSamePassword) {
+    return new NextResponse("A nova senha não pode ser igual à senha antiga", {
+      status: 400,
+    });
+  }
+
   const hashedPassword = await bcrypt.hash(password, 5);
   user.password = hashedPassword;
   user.code = undefined;

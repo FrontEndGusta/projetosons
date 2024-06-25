@@ -66,7 +66,7 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
         "Ocorreu um erro ao redefinir a senha. Por favor, tente novamente.";
       toast({
         variant: "destructive",
-        title: dialogLexicon.ERROR_MESSAGES.codeError,
+        title: dialogLexicon.ERROR_MESSAGES.resetPasswordError,
         description: errorMessage,
       });
     }

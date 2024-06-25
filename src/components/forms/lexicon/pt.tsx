@@ -1,14 +1,15 @@
 export const dialogLexicon = {
   ERROR_MESSAGES: {
-    email: "Endereço de email inválido",
+    email: "Endereço de email inválido.",
     firstName: "O nome de usuário deve ter pelo menos 2 caracteres.",
     lastName: "O sobrenome de usuário deve ter pelo menos 2 caracteres.",
     password: "A senha deve ter pelo menos 6 caracteres.",
     confirmPassword: "A senha deve ter pelo menos 6 caracteres.",
-    loginError: "Ocorreu um erro ao realizar o login",
-    registerError: "Ocorreu um erro ao realizar o cadastro",
+    loginError: "Ocorreu um erro ao realizar o login.",
+    registerError: "Ocorreu um erro ao realizar o cadastro.",
     codeError: 'O código deve ter pelo menos 6 caracteres.',
-    codeSendError: 'Ocorreu um erro ao enviar o código'
+    codeSendError: 'Ocorreu um erro ao enviar o código.',
+    resetPasswordError: 'Ocorreu um erro ao redefinir a senha.'
   },
 
   SUCCESS_MESSAGES: {

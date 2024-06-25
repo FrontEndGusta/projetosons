@@ -9,5 +9,5 @@ export default function Dashboard() {
   if (!session) {
     return router.push("/login"); // Optional, can show a loading spinner here too
   }
-  return <>{session && <div>oi</div>}</>;
+  return <>{session && <div>oissss</div>}</>;
 }
