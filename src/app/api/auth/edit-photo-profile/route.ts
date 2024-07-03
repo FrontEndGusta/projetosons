@@ -1,24 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connect from '@/utils/db';
 import User from '@/models/User';
+import { getToken } from 'next-auth/jwt';
+import email from 'next-auth/providers/email';
+import { getServerSession } from 'next-auth';
+import { options } from '../[...nextauth]/route';
 
 export async function POST(req: NextRequest) {
   await connect();
+  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
-  const { email, myFile } = await req.json();
+  const { file } = await req.json();
 
-  if (!email || !myFile) {
-    return NextResponse.json({ message: 'Email e imagem são necessários' }, { status: 400 });
+  if (!file) {
+    return NextResponse.json({ message: 'Necessário anexar uma imagem' }, { status: 400 });
   }
-
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email: token?.email });;
 
   if (!user) {
     return NextResponse.json({ message: 'Usuário não encontrado' }, { status: 404 });
   }
 
-  user.avatar = myFile;
-  user.avatarContentType = myFile.split(';')[0].split(':')[1]; // Extrair tipo de conteúdo da string base64
+  user.avatar = file;
+  user.avatarContentType = file.split(';')[0].split(':')[1]; // Extrair tipo de conteúdo da string base64
 
   try {
     await user.save();

@@ -36,14 +36,12 @@ const useResetPassword = (onTabChange?: (changeTab: string) => void) => {
   const { toast } = useToast();
   const router = useRouter();
   const {email} = useEmail()
-  console.log(email)
   const mutation = useMutation({ mutationFn: onSubmitResetPassword });
 
   async function onSubmitResetPassword(
     values: z.infer<typeof FormSchemaResetPassword>
   ) {
     try {
-        console.log('Email recebido em onSubmitResetPassword:', email);
       const response = await axios.post("/api/auth/reset-password", {...values, email});
       const statusCode = response?.data?.status || response?.status;
 

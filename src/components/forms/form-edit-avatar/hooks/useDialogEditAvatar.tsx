@@ -9,50 +9,47 @@ import { dialogLexicon } from "@/components/forms/lexicon/pt";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-const FormSchemaDialogResetPassword = z
-  .object({
-    password: z.string().min(6, dialogLexicon.ERROR_MESSAGES.password),
-    confirmPassword: z
-      .string()
-      .min(6, dialogLexicon.ERROR_MESSAGES.confirmPassword),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "As senhas não coincidem",
-    path: ["confirmPassword"],
-  });
+const FormSchemaDialogEditAvatar = z.object({
+  file: z.string().min(6, dialogLexicon.ERROR_MESSAGES.password),
+});
 
-const useDialogResetPassword = () => {
-  const formDialogResetPassword = useForm({
-    resolver: zodResolver(FormSchemaDialogResetPassword),
+const useDialogEditAvatar = () => {
+  const formDialogEditAvatar = useForm({
+    resolver: zodResolver(FormSchemaDialogEditAvatar),
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      file: "",
     },
   });
 
   const { toast } = useToast();
-  const { reset } = formDialogResetPassword;
+  const { reset } = formDialogEditAvatar;
   const router = useRouter();
   const { data: session } = useSession();
-  const mutation = useMutation({ mutationFn: onSubmitDialogResetPassword });
-  const email = session?.user?.email;
-   
+  const mutation = useMutation({ mutationFn: onSubmitDialogEditAvatar });
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === "string") {
+          formDialogEditAvatar.setValue("file", reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-  async function onSubmitDialogResetPassword(
-    values: z.infer<typeof FormSchemaDialogResetPassword>
+  async function onSubmitDialogEditAvatar(
+    values: z.infer<typeof FormSchemaDialogEditAvatar>
   ) {
     try {
-
-      const response = await axios.post("/api/auth/reset-password", {
-        ...values,
-        email,
-      });
+      const response = await axios.post("/api/auth/edit-photo-profile", values);
 
       const statusCode = response?.data?.status || response?.status;
       if (statusCode === 201 || statusCode === 200) {
         toast({
-          title: dialogLexicon.SUCCESS_MESSAGES.resetPasswordSuccess,
+          title: dialogLexicon.SUCCESS_MESSAGES.avatarSendSuccess,
         });
       } else {
         const errorMessage = response?.data?.message;
@@ -62,14 +59,13 @@ const useDialogResetPassword = () => {
         });
       }
       reset();
-      
     } catch (err: any) {
       let errorMessage =
         err.response?.data?.error ||
-        "Ocorreu um erro ao redefinir a senha. Por favor, tente novamente.";
+        "Ocorreu um erro ao enviar a imagem. Por favor, tente novamente.";
       toast({
         variant: "destructive",
-        title: dialogLexicon.ERROR_MESSAGES.resetPasswordError,
+        title: dialogLexicon.ERROR_MESSAGES.avatarSendError,
         description: errorMessage,
       });
     }
@@ -80,10 +76,11 @@ const useDialogResetPassword = () => {
     isPending: mutation.isPending,
     error: mutation.error,
     data: mutation.data,
-    formDialogResetPassword,
+    formDialogEditAvatar,
     isLoading: mutation.isPending,
-    onSubmitDialogResetPassword,
+    handleFileChange,
+    onSubmitDialogEditAvatar,
   };
 };
 
-export default useDialogResetPassword;
+export default useDialogEditAvatar;

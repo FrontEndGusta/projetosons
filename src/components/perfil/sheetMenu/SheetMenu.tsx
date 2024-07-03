@@ -1,46 +1,52 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useSession } from "next-auth/react";
 
 import EditProfileForm from "../../forms/form-edit-profile/editProfile";
 import useSheetMenu from "./hooks/useSheetMenu";
+import { Separator } from "@/components/ui/separator";
+import DialogEditAvatar from "../dialogEditAvatar/dialogEditAvatar";
 export function SheetSide() {
-    const {name, email} = useSheetMenu()
+  const { name, email, avatar } = useSheetMenu();
   return (
     <div className="grid gap-2 cursor-pointer">
       <Sheet key={"left"}>
         <SheetTrigger asChild>
           <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
+            <AvatarImage
+              src={avatar ? avatar : "https://github.com/shadcn.png"}
+            />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
         </SheetTrigger>
         <SheetContent side={"left"}>
-          <SheetHeader className='flex-row gap-2'>
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-            <SheetTitle>Editar Perfil</SheetTitle>
+          <SheetHeader className="flex-row gap-2 items-center">
+            <Avatar>
+              <AvatarImage
+                src={avatar ? avatar : "https://github.com/shadcn.png"}
+              />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div>
+              <div>
+                <SheetTitle>Editar Perfil</SheetTitle>
+                <Separator className="my-1" />
+              </div>
+
+              <div>
+                <DialogEditAvatar />
+              </div>
+            </div>
           </SheetHeader>
           <div className="grid gap-4 py-4">
             <EditProfileForm />
           </div>
-          
         </SheetContent>
       </Sheet>
     </div>

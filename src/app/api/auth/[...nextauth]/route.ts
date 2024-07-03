@@ -1,17 +1,17 @@
-import User from "@/models/User";
-import NextAuth from "next-auth";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import connect from "@/utils/db";
+import User from "@/models/User";
 
-const options = NextAuth({
+const options: NextAuthOptions  = {
   providers: [
     CredentialsProvider({
       id: "Credentials",
       name: "Credentials",
       credentials: {
         email: { label: "email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
         await connect();
@@ -30,7 +30,11 @@ const options = NextAuth({
             const validPassword = await bcrypt.compare(password, user.password);
 
             if (validPassword) {
-              return user;
+              return {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+              };
             } else {
               throw new Error("Credenciais erradas!");
             }
@@ -44,16 +48,28 @@ const options = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
-      if (trigger === "update") {
-        return { ...token, ...session.user };
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email ?? '';
+        token.name = user.name ?? '';
       }
-      return { ...token, ...user };
+      return token;
+    },
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.email = token.email;
+        session.user.name = token.name;
+      }
+      return session;
     },
   },
   pages: {
     error: "/login",
   },
-});
+};
 
-export { options as GET, options as POST };
+const handler = NextAuth(options);
+
+export { handler as GET, handler as POST, options, NextAuth };

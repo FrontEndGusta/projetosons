@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import QueryProvider from "@/components/QueryProvider"; // Importe o componente criado
-import AuthProvider from "@/components/AuthProvider";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import QueryProvider from "@/providers/QueryProvider"; // Importe o componente criado
+
+import { ThemeProvider } from "@/providers/ThemeProvider";
 import { EmailProvider } from "@/context/EmailContext";
 import Header from "@/components/header/Header";
+import AuthProvider from "@/providers/AuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
