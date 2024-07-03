@@ -3,8 +3,8 @@ import connect from '@/utils/db';
 import User from '@/models/User';
 import { getToken } from 'next-auth/jwt';
 import email from 'next-auth/providers/email';
-import { getServerSession } from 'next-auth';
-import { Options } from '../[...nextauth]/route';
+
+
 
 export async function POST(req: NextRequest) {
   await connect();

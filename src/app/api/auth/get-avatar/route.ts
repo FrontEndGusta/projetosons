@@ -3,13 +3,13 @@ import connect from '@/utils/db';
 import User from '@/models/User';
 import { getToken } from 'next-auth/jwt';
 import { getServerSession } from 'next-auth';
-import { Options } from '../[...nextauth]/route';
+
 
 export async function GET(req: NextRequest) {
   try {
     await connect();
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    const session = await getServerSession(Options);
+
 
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
