@@ -6,14 +6,17 @@ import axios from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { dialogLexicon } from "@/components/forms/lexicon/pt";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 const FormSchemaDialogEditAvatar = z.object({
   file: z.string().min(6, dialogLexicon.ERROR_MESSAGES.password),
 });
 
-const useDialogEditAvatar = () => {
+interface UseDialogEditAvatarFormProps {
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const useDialogEditAvatar = ({ setOpen }: UseDialogEditAvatarFormProps) => {
   const formDialogEditAvatar = useForm({
     resolver: zodResolver(FormSchemaDialogEditAvatar),
     defaultValues: {
@@ -23,9 +26,10 @@ const useDialogEditAvatar = () => {
 
   const { toast } = useToast();
   const { reset } = formDialogEditAvatar;
-  const router = useRouter();
-  const { data: session } = useSession();
-  const mutation = useMutation({ mutationFn: onSubmitDialogEditAvatar });
+
+  const mutation = useMutation({
+    mutationFn: onSubmitDialogEditAvatar,
+  });
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -51,6 +55,7 @@ const useDialogEditAvatar = () => {
         toast({
           title: dialogLexicon.SUCCESS_MESSAGES.avatarSendSuccess,
         });
+        setOpen && setOpen(false);
       } else {
         const errorMessage = response?.data?.message;
         toast({
@@ -58,7 +63,6 @@ const useDialogEditAvatar = () => {
           title: errorMessage,
         });
       }
-      reset();
     } catch (err: any) {
       let errorMessage =
         err.response?.data?.error ||
@@ -69,15 +73,14 @@ const useDialogEditAvatar = () => {
         description: errorMessage,
       });
     }
-    reset();
   }
 
   return {
     isPending: mutation.isPending,
+    isLoading: mutation.isPending,
     error: mutation.error,
     data: mutation.data,
     formDialogEditAvatar,
-    isLoading: mutation.isPending,
     handleFileChange,
     onSubmitDialogEditAvatar,
   };

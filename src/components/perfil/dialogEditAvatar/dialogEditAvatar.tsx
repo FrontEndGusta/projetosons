@@ -1,5 +1,6 @@
 import DialogResetPasswordForm from "@/components/forms/form-dialog-reset-password/DialogResetPassword";
 import DialogEditAvatarForm from "@/components/forms/form-edit-avatar/DialogEditAvatar";
+import useDialogEditAvatar from "@/components/forms/form-edit-avatar/hooks/useDialogEditAvatar";
 import {
   Dialog,
   DialogContent,
@@ -7,10 +8,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useState } from "react";
 
-export function DialogEditAvatar() {
+export const DialogEditAvatar = () => {
+
+  const [open, setOpen] = useState(false)
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <span
           className="text-[#7C3AED] dark:text-[#F9FAFB]"
@@ -23,7 +27,7 @@ export function DialogEditAvatar() {
         <DialogHeader>
           <DialogTitle>Atualize sua foto de perfil</DialogTitle>
         </DialogHeader>
-        <DialogEditAvatarForm />
+        <DialogEditAvatarForm setOpen={setOpen}/>
       </DialogContent>
     </Dialog>
   );
