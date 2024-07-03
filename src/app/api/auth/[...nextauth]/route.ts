@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import connect from "@/utils/db";
 import User from "@/models/User";
 
-const options: NextAuthOptions  = {
+const Options: NextAuthOptions  = {
   providers: [
     CredentialsProvider({
       id: "Credentials",
@@ -70,6 +70,6 @@ const options: NextAuthOptions  = {
   },
 };
 
-const handler = NextAuth(options);
+const handler = NextAuth(Options);
 
-export { handler as GET, handler as POST, options, NextAuth };
+export { handler as GET, handler as POST, Options, NextAuth };

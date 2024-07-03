@@ -4,7 +4,7 @@ import User from '@/models/User';
 import { getToken } from 'next-auth/jwt';
 import email from 'next-auth/providers/email';
 import { getServerSession } from 'next-auth';
-import { options } from '../[...nextauth]/route';
+import { Options } from '../[...nextauth]/route';
 
 export async function POST(req: NextRequest) {
   await connect();
