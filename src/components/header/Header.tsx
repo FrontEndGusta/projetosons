@@ -13,6 +13,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { SheetSide } from "../perfil/sheetMenu/SheetMenu";
+import { NavigationMenuDemo } from "../navigation/Navigation";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -23,12 +24,13 @@ export default function Header() {
     : "Guest";
 
   return (
-    <div className="flex gap-4 p-2 pr-10 flex-wrap justify-end">
+    <div className="flex gap-4 p-2 pr-10 flex-wrap justify-end ">
       {session && (
-        <>
+        <div className="flex-grow px-2 flex items-center gap-2">
           <SheetSide />
-          <span className="flex-grow px-2 flex items-center">{`Olá, ${userName}`}</span>
-        </>
+          <span className="font-medium	text-sm/[14px]">{`Olá, ${userName}`}</span>
+          <NavigationMenuDemo />
+        </div>
       )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

@@ -9,27 +9,26 @@ import {
 import { useState } from "react";
 
 export const DialogEditAvatar = () => {
+  const [open, setOpen] = useState(false);
 
-  const [open, setOpen] = useState(false)
-  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <span
-          className="text-[#7C3AED] dark:text-[#F9FAFB]"
+          className="text-[#7C3AED] dark:text-[#F9FAFB] text-sm/[14px] "
           style={{ cursor: "pointer" }}
         >
-          editar foto
+          Editar foto
         </span>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Atualize sua foto de perfil</DialogTitle>
         </DialogHeader>
-        <DialogEditAvatarForm setOpen={setOpen}/>
+        <DialogEditAvatarForm setOpen={setOpen} />
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 export default DialogEditAvatar;
