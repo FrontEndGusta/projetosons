@@ -44,6 +44,7 @@ const useLogin = (onTabChange?: (changeTab: string) => void) => {
           variant: "destructive",
           title: dialogLexicon.ERROR_MESSAGES.loginError,
           description: response?.error || "Ocorreu um erro inesperado.",
+          
         });
       }
     } catch (err) {
