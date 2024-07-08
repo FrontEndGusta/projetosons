@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import connect from "@/utils/db";
 import User from "@/models/User";
 
-const Options: NextAuthOptions  = {
+const Options: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: "Credentials",
@@ -42,20 +42,26 @@ const Options: NextAuthOptions  = {
             throw new Error("Credenciais erradas!");
           }
         } catch (error) {
-          throw new Error(error instanceof Error ? error.message : "Unknown error");
+          throw new Error(
+            error instanceof Error ? error.message : "Unknown error"
+          );
         }
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
-        token.email = user.email ?? '';
-        token.name = user.name ?? '';
+        token.email = user.email ?? "";
+        token.name = user.name ?? "";
       }
-      return token;
+      if (trigger === "update") {
+        return { ...token, ...session.user };
+      }
+      return { ...token, ...user };
     },
+    // arrumar o trigger aq
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;

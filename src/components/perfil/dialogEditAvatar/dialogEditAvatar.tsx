@@ -1,6 +1,4 @@
-import DialogResetPasswordForm from "@/components/forms/form-dialog-reset-password/DialogResetPassword";
 import DialogEditAvatarForm from "@/components/forms/form-edit-avatar/DialogEditAvatar";
-import useDialogEditAvatar from "@/components/forms/form-edit-avatar/hooks/useDialogEditAvatar";
 import {
   Dialog,
   DialogContent,
@@ -13,6 +11,7 @@ import { useState } from "react";
 export const DialogEditAvatar = () => {
 
   const [open, setOpen] = useState(false)
+  
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
