@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   if (!file) {
     return NextResponse.json({ message: 'Necessário anexar uma imagem' }, { status: 400 });
   }
-  const user = await User.findOne({ email: token?.email });;
+  const user = await User.findOne({ email: token?.email });
 
   if (!user) {
     return NextResponse.json({ message: 'Usuário não encontrado' }, { status: 404 });

@@ -12,13 +12,12 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
 const components: { title: string; href: string; description: string }[] = [
   {
     title: "Service Desk",
-    href: "/app/serviceDesk",
+    href: "/serviceDesk",
     description:
       "Crie chamados de sistemas ou equipamentos, incluindo requisições.",
   },

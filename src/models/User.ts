@@ -12,6 +12,7 @@ const userSchema = new Schema(
     codeExpiration: { type: Date }, // Data de expiração do código
     avatar: { type: String },
     avatarContentType: { type: String },
+    calls: { type: Object, default: {name: 'teste'} }, // Definir calls como um objeto vazio por padrão
   },
   { timestamps: true }
 );

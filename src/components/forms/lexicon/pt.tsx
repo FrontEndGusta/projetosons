@@ -10,7 +10,9 @@ export const dialogLexicon = {
     codeError: 'O código deve ter pelo menos 6 caracteres.',
     codeSendError: 'Ocorreu um erro ao enviar o código.',
     resetPasswordError: 'Ocorreu um erro ao redefinir a senha.',
-    avatarSendError: 'Ocorreu um erro ao enviar a imagem.'
+    avatarSendError: 'Ocorreu um erro ao enviar a imagem.',
+    telephoneError: 'O telefone deve ter pelo menos 6 números',
+    serviceDesksendError: 'Ocorreu um erro ao criar o chamado.'
   },
 
   SUCCESS_MESSAGES: {
@@ -20,6 +22,7 @@ export const dialogLexicon = {
     forgotPasswordSuccess: "Código enviado com sucesso!",
     codeVerifiedSuccess: "Código verificado com sucesso!",
     resetPasswordSuccess: "Senha redefinida com sucesso!",
-    avatarSendSuccess: 'Imagem enviada com sucesso!'
+    avatarSendSuccess: 'Imagem enviada com sucesso!',
+    serviceDeskSuccess: 'Chamado criado com sucesso!'
   },
 };
