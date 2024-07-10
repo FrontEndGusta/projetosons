@@ -7,20 +7,28 @@ const useSheetMenu = () => {
     const name: string | undefined = session?.user?.name || undefined;
     const email: string | undefined = session?.user?.email || undefined;
 
-    const { data: avatar } = useQuery({ queryKey: ['avatar'], queryFn: getAvatar })
-
     async function getAvatar() {
         try {
-          const response = await axios.get('/api/auth/get-avatar');
-          return response.data.data.avatar; 
+            const response = await axios.get('/api/auth/get-avatar');
+            // Ensure we return a defined value
+            return response.data.data.avatar || null;
         } catch (error) {
-          throw new Error('Erro ao obter o avatar do usuário.');
+            console.error('Erro ao obter o avatar do usuário:', error);
+            return null;
         }
-      }
-    return{
+    }
+
+    const { data: avatar } = useQuery({
+        queryKey: ['avatar'],
+        queryFn: getAvatar,
+        initialData: null,
+    });
+
+    return {
         avatar,
         name,
-        email
-    }
-}
-export default useSheetMenu
+        email,
+    };
+};
+
+export default useSheetMenu;

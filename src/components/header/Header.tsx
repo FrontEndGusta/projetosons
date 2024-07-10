@@ -2,7 +2,12 @@
 import React from "react";
 import { signOut, useSession } from "next-auth/react";
 
-import { ExitIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import {
+  ExitIcon,
+  MoonIcon,
+  SunIcon,
+  HamburgerMenuIcon,
+} from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import {
   DropdownMenu,
@@ -10,7 +15,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { SheetSide } from "../perfil/sheetMenu/SheetMenu";
 import { NavigationMenuDemo } from "../navigation/Navigation";
@@ -34,7 +38,7 @@ export default function Header() {
       )}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="icon">
+          <Button variant="outline" size="icon" className="hidden md:flex">
             <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
             <MoonIcon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           </Button>
@@ -50,9 +54,40 @@ export default function Header() {
         </DropdownMenuContent>
       </DropdownMenu>
       {session && (
-        <Button variant="outline" size="icon" onClick={() => signOut()}>
-          <ExitIcon />
-        </Button>
+        <>
+          <div className="hidden md:flex">
+            <Button variant="outline" size="icon" onClick={() => signOut()}>
+              <ExitIcon />
+            </Button>
+          </div>
+          <div className="flex sm:hidden">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <HamburgerMenuIcon />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem onClick={() => setTheme("light")}>
+                  <span className="flex gap-1 items-center">
+                    <SunIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90" />
+                    Modo Claro
+                  </span>
+                </DropdownMenuItem>
+
+                <DropdownMenuItem onClick={() => setTheme("dark")}>
+                  <span className="flex gap-1 items-center">
+                    <MoonIcon className="h-[1.2rem] w-[1.2rem] transition-all dark:rotate-0 dark:scale-100" />
+                    Modo Escuro
+                  </span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => signOut()}>
+                  <span className="flex gap-1 items-center">
+                    <ExitIcon /> Sair
+                  </span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </>
       )}
     </div>
   );

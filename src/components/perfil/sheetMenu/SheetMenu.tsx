@@ -13,7 +13,7 @@ import useSheetMenu from "./hooks/useSheetMenu";
 import { Separator } from "@/components/ui/separator";
 import DialogEditAvatar from "../dialogEditAvatar/dialogEditAvatar";
 export function SheetSide() {
-  const { name, email, avatar } = useSheetMenu();
+  const { avatar } = useSheetMenu();
   return (
     <div className="grid gap-2 cursor-pointer">
       <Sheet key={"left"}>
