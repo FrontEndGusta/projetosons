@@ -8,6 +8,7 @@ export async function POST(req: NextRequest) {
   const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
 
   if (!token) {
+    console.error("Token não encontrado");
     return NextResponse.json(
       { message: "Token não encontrado" },
       { status: 401 }
@@ -17,29 +18,49 @@ export async function POST(req: NextRequest) {
   const { name, telephone } = await req.json();
 
   if (!name || !telephone) {
+    console.error("Campos obrigatórios não preenchidos");
     return NextResponse.json(
       { message: "Necessário preencher todos os campos!" },
       { status: 400 }
     );
   }
 
-  const user = await User.findOne({ email: token.email });
-  if (!user) {
-    return NextResponse.json(
-      { message: "Usuário não encontrado" },
-      { status: 404 }
-    );
-  }
-  user.calls = user.calls || {name: 'teste'};
-
-  user.calls.name = name;
-  user.calls.telephone = telephone;
   try {
+    // Procura pelo usuário com base no email do token
+    const user = await User.findOne({ email: token.email });
+
+    if (!user) {
+      console.error("Usuário não encontrado");
+      return NextResponse.json(
+        { message: "Usuário não encontrado" },
+        { status: 404 }
+      );
+    }
+
+    // Verifica se calls é um array e inicializa se não for
+    if (!Array.isArray(user.calls)) {
+      user.calls = [];
+    }
+
+    // Gera um número de ticket único
+    const ticketNumber = `TICKET-${Math.floor(1000 + Math.random() * 9000)}`;
+
+    // Cria um novo objeto de chamada
+    const newCall = {
+      name,
+      telephone,
+      ticketNumber,
+    };
+
+    // Adiciona o novo objeto de chamada ao array user.calls
+    user.calls.push(newCall);
+
+    // Salva o usuário com a nova chamada
     await user.save();
-    console.log(user)
-    console.log("Chamado salvo com sucesso no banco de dados");
+
+    console.log("Chamado salvo com sucesso no banco de dados", user);
     return NextResponse.json(
-      { message: "Chamado salvo com sucesso" },
+      { message: "Chamado salvo com sucesso", ticketNumber },
       { status: 200 }
     );
   } catch (error) {

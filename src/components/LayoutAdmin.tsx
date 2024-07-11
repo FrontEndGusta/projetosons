@@ -13,7 +13,7 @@ export default function LayoutAdmin({ children }: LayoutAdminProps) {
 
   useEffect(() => {
     if (status === "authenticated") {
-    } else if (status !== "loading") {
+    } else if (status === "unauthenticated") {
       router.push("/login");
     }
   }, [status, router]);

@@ -12,7 +12,8 @@ export const dialogLexicon = {
     resetPasswordError: 'Ocorreu um erro ao redefinir a senha.',
     avatarSendError: 'Ocorreu um erro ao enviar a imagem.',
     telephoneError: 'O telefone deve ter pelo menos 6 números',
-    serviceDesksendError: 'Ocorreu um erro ao criar o chamado.'
+    serviceDesksendError: 'Ocorreu um erro ao criar o chamado.',
+    serviceDeskFormSelectError: 'O campo de localidade precisa ser preenchido.'
   },
 
   SUCCESS_MESSAGES: {

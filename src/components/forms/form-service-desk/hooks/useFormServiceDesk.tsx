@@ -8,41 +8,41 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { dialogLexicon } from "@/components/forms/lexicon/pt";
 import { useRouter } from "next/navigation";
 
-
-const FormSchemaServiceDesk = z
-  .object({
-    name: z.string().min(6, dialogLexicon.ERROR_MESSAGES.firstName),
-    telephone: z
-      .string()
-      .min(6, dialogLexicon.ERROR_MESSAGES.telephoneError),
-  })
+const FormSchemaServiceDesk = z.object({
+  name: z.string().min(6, dialogLexicon.ERROR_MESSAGES.firstName),
+  telephone: z.string().min(6, dialogLexicon.ERROR_MESSAGES.telephoneError),
+  locale: z.string({
+      required_error: "Please select an locale to display.",
+    })
+});
 
 const useServiceDesk = () => {
   const formServiceDesk = useForm({
     resolver: zodResolver(FormSchemaServiceDesk),
     defaultValues: {
       name: "",
-      telephone: ''
+      telephone: "",
+      locale: ""
     },
   });
 
   const { toast } = useToast();
   const router = useRouter();
-
+  const { reset } = formServiceDesk;
   const mutation = useMutation({ mutationFn: onSubmitServiceDesk });
 
   async function onSubmitServiceDesk(
     values: z.infer<typeof FormSchemaServiceDesk>
   ) {
     try {
-      const response = await axios.post("/api/auth/service-desk-tickets", {...values});
+      const response = await axios.post("/api/auth/service-desk-tickets", {
+        ...values,
+      });
       const statusCode = response?.data?.status || response?.status;
-      console.log(response)
       if (statusCode === 201 || statusCode === 200) {
         toast({
           title: dialogLexicon.SUCCESS_MESSAGES.serviceDeskSuccess,
         });
-
       } else {
         const errorMessage = response?.data?.message;
         toast({
@@ -50,6 +50,7 @@ const useServiceDesk = () => {
           title: errorMessage,
         });
       }
+      reset();
     } catch (err: any) {
       let errorMessage =
         err.response?.data?.error ||

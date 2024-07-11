@@ -8,15 +8,21 @@ const userSchema = new Schema(
     lastName: { type: String },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    code: { type: String }, // Código de verificação
-    codeExpiration: { type: Date }, // Data de expiração do código
+    code: { type: String },
+    codeExpiration: { type: Date },
     avatar: { type: String },
     avatarContentType: { type: String },
-    calls: { type: Object, default: {name: 'teste'} }, // Definir calls como um objeto vazio por padrão
+    calls: [
+      {
+        name: { type: String },
+        telephone: { type: String },
+        ticketNumber: { type: String },
+      },
+    ],
   },
   { timestamps: true }
 );
 
-const modelName = mongoose.models.User || mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
-export default modelName;
+export default User;

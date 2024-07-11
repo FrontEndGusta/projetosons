@@ -1,4 +1,6 @@
+"use client"
 import ServiceDeskForm from "@/components/forms/form-service-desk/ServiceDesk";
+import LayoutAdmin from "@/components/LayoutAdmin";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -9,11 +11,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function Page() {
+
   return (
+    <LayoutAdmin>
     <div>
       <Dialog>
         <DialogTrigger asChild>
@@ -29,5 +31,6 @@ export default function Page() {
         </DialogContent>
       </Dialog>
     </div>
+    </LayoutAdmin>
   );
 }
