@@ -34,6 +34,7 @@ const Options: NextAuthOptions = {
                 id: user._id,
                 name: user.name,
                 email: user.email,
+                department: user.department
               };
             } else {
               throw new Error("Credenciais erradas!");
@@ -55,6 +56,7 @@ const Options: NextAuthOptions = {
         token.id = user.id;
         token.email = user.email ?? "";
         token.name = user.name ?? "";
+       
       }
       if (trigger === "update") {
         return { ...token, ...session.user };
@@ -67,6 +69,7 @@ const Options: NextAuthOptions = {
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.name = token.name;
+        session.user.department = token.department
       }
       return session;
     },

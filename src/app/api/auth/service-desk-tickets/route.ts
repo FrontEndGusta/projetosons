@@ -15,9 +15,19 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const { name, telephone } = await req.json();
+  const {
+    name,
+    locale,
+    priority,
+    telephone,
+    department,
+    summary,
+    category,
+    item,
+    type,
+  } = await req.json();
 
-  if (!name || !telephone) {
+  if (!name || !telephone || !locale || !priority || !department || !summary || !category || !item || !type) {
     console.error("Campos obrigatórios não preenchidos");
     return NextResponse.json(
       { message: "Necessário preencher todos os campos!" },
@@ -48,7 +58,14 @@ export async function POST(req: NextRequest) {
     // Cria um novo objeto de chamada
     const newCall = {
       name,
+      locale,
+      priority,
       telephone,
+      department,
+      summary,
+      category,
+      item,
+      type,
       ticketNumber,
     };
 

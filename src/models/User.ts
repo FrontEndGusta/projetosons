@@ -6,6 +6,7 @@ const userSchema = new Schema(
   {
     name: { type: String, required: true },
     lastName: { type: String },
+    department: {type: String, required: true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     code: { type: String },
@@ -16,6 +17,12 @@ const userSchema = new Schema(
       {
         name: { type: String },
         telephone: { type: String },
+        locale: {type: String}, 
+        department: {type: String},
+        summary: {type: String},
+        category: {type: String},
+        item: {type: String},
+        type: {type: String},
         ticketNumber: { type: String },
       },
     ],

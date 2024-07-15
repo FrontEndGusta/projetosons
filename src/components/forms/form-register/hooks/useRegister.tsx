@@ -13,6 +13,9 @@ const FormSchemaRegister = z
   .object({
     name: z.string().min(2, dialogLexicon.ERROR_MESSAGES.firstName),
     lastname: z.string().min(2, dialogLexicon.ERROR_MESSAGES.lastName),
+    department: z.string({
+      required_error: "Please select an locale to display.",
+    }),
     email: z.string().email(dialogLexicon.ERROR_MESSAGES.email),
     password: z.string().min(6, dialogLexicon.ERROR_MESSAGES.password),
     confirmPassword: z
@@ -30,6 +33,7 @@ const useRegister = (onTabChange?: (changeTab: string) => void) => {
     defaultValues: {
       name: "",
       lastname: "",
+      department: "",
       email: "",
       password: "",
       confirmPassword: "",

@@ -8,6 +8,7 @@ declare module "next-auth" {
       name: string;
       lastName: string; // Inclui lastName aqui
       createdAt?: string;
+      department?: string
     };
   }
 }
@@ -23,5 +24,6 @@ declare module "next-auth/jwt" {
     name: string;
     lastName: string;
     createdAt?: string;
+    department?: string;
   }
 }

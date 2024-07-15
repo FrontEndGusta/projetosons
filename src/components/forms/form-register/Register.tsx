@@ -6,6 +6,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormControl
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,13 +19,23 @@ import {
 import { ReloadIcon } from "@radix-ui/react-icons";
 import useRegister from "./hooks/useRegister";
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 interface RegisterFormProps {
   onTabChange: (value: string) => void;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onTabChange }) => {
-  const { formRegister, isLoading, onSubmitRegister } = useRegister((changeTab) =>
-    onTabChange(changeTab)
+  const { formRegister, isLoading, onSubmitRegister } = useRegister(
+    (changeTab) => onTabChange(changeTab)
   );
 
   return (
@@ -33,7 +44,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onTabChange }) => {
         <CardTitle>Faça o cadastro</CardTitle>
         <CardDescription>
           Caso já possua conta criada,{" "}
-          <span className="text-[#7C3AED] dark:text-[#F9FAFB]"
+          <span
+            className="text-[#7C3AED] dark:text-[#F9FAFB]"
             onClick={() => onTabChange("entrar")}
             style={{ cursor: "pointer" }}
           >
@@ -71,6 +83,35 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onTabChange }) => {
                     placeholder="sobrenome"
                     {...field}
                   />
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={formRegister.control}
+              name="department"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Departamento</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione o departamento" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Usuário padrão">Usuário padrão</SelectItem>
+                      <SelectItem value="TI">
+                        TI
+                      </SelectItem>
+                      <SelectItem value="Financeiro">Financeiro</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
