@@ -5,14 +5,10 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function PageLogin() {
-  const router = useRouter();
+
   const { data: session } = useSession();
 
-  useEffect(() => {
-    if (session) {
-      router.push("/");
-    }
-  }, [session, router]);
+
 
   return (
     <>

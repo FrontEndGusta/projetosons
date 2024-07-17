@@ -24,6 +24,7 @@ const userSchema = new Schema(
         item: {type: String},
         type: {type: String},
         ticketNumber: { type: String },
+        createdAt: { type: Date, default: Date.now }
       },
     ],
   },

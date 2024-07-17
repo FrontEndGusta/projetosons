@@ -76,6 +76,8 @@ const Options: NextAuthOptions = {
   },
   pages: {
     error: "/login",
+    signIn: "/dashboard",
+    signOut: "/login"
   },
 };
 

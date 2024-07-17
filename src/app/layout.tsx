@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { EmailProvider } from "@/context/EmailContext";
 import Header from "@/components/header/Header";
 import AuthProvider from "@/providers/AuthProvider";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import LayoutAdmin from "@/components/LayoutAdmin";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,25 +24,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning> 
+    <html lang="en" suppressHydrationWarning>
       <AuthProvider>
         <EmailProvider>
-        <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-          <QueryProvider>
-            <Header />
-            {" "}
-            {/* Utilize o QueryProvider aqui */}
-            {children}
-            <Toaster />
-          </QueryProvider>
-          </ThemeProvider>
-        </body>
+          <TooltipProvider>
+            <body className={inter.className}>
+  
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  <QueryProvider>
+                    <Header /> {/* Utilize o QueryProvider aqui */}
+                    {children}
+                    <Toaster />
+                  </QueryProvider>
+                </ThemeProvider>
+        
+            </body>
+          </TooltipProvider>
         </EmailProvider>
       </AuthProvider>
     </html>

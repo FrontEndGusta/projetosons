@@ -27,7 +27,17 @@ export async function POST(req: NextRequest) {
     type,
   } = await req.json();
 
-  if (!name || !telephone || !locale || !priority || !department || !summary || !category || !item || !type) {
+  if (
+    !name ||
+    !telephone ||
+    !locale ||
+    !priority ||
+    !department ||
+    !summary ||
+    !category ||
+    !item ||
+    !type
+  ) {
     console.error("Campos obrigatórios não preenchidos");
     return NextResponse.json(
       { message: "Necessário preencher todos os campos!" },

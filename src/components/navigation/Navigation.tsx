@@ -12,6 +12,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 
 const components: { title: string; href: string; description: string }[] = [
@@ -27,6 +28,13 @@ export function NavigationMenuDemo() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
+      <NavigationMenuItem>
+          <Link href="/dashboard" legacyBehavior passHref>
+            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+              Dashboard
+            </NavigationMenuLink>
+          </Link>
+        </NavigationMenuItem>
         <NavigationMenuItem>
           <NavigationMenuTrigger>Projetos</NavigationMenuTrigger>
           <NavigationMenuContent>
@@ -43,13 +51,7 @@ export function NavigationMenuDemo() {
             </ul>
           </NavigationMenuContent>
         </NavigationMenuItem>
-        {/* <NavigationMenuItem>
-          <Link href="/docs" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Documentation
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem> */}
+        
       </NavigationMenuList>
     </NavigationMenu>
   )

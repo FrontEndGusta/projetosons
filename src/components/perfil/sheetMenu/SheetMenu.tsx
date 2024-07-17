@@ -12,8 +12,9 @@ import EditProfileForm from "../../forms/form-edit-profile/editProfile";
 import useSheetMenu from "./hooks/useSheetMenu";
 import { Separator } from "@/components/ui/separator";
 import DialogEditAvatar from "../dialogEditAvatar/dialogEditAvatar";
+import useAvatar from "@/utils/useAvatar";
 export function SheetSide() {
-  const { avatar } = useSheetMenu();
+  const { avatar } = useAvatar();
   return (
     <div className="grid gap-2 cursor-pointer">
       <Sheet key={"left"}>
